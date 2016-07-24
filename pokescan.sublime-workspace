@@ -1,0 +1,655 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pro",
+				"progress"
+			],
+			[
+				"job",
+				"jobId"
+			],
+			[
+				"loca",
+				"location"
+			],
+			[
+				"loc",
+				"location"
+			],
+			[
+				"locatio",
+				"locationsHash"
+			],
+			[
+				"docker",
+				"dockerInstance"
+			],
+			[
+				"locat",
+				"locationsHash"
+			],
+			[
+				"gig_a_",
+				"gig_a_body"
+			],
+			[
+				"key",
+				"keyword1"
+			],
+			[
+				"score",
+				"score_gig"
+			],
+			[
+				"it",
+				"it_behaves_like"
+			],
+			[
+				"Gig",
+				"GigScraperDrivers"
+			],
+			[
+				"descr",
+				"described_class"
+			],
+			[
+				"date",
+				"date_posted"
+			],
+			[
+				"al",
+				"all_keywords"
+			],
+			[
+				"GigScrape",
+				"GigScraperDriver"
+			],
+			[
+				"UPWR",
+				"UPWORK_CONSUMER_KEY"
+			],
+			[
+				"parse",
+				"parsed_job"
+			],
+			[
+				"pr",
+				"private"
+			],
+			[
+				"source",
+				"source_base_url"
+			],
+			[
+				"save",
+				"save_score"
+			],
+			[
+				"empl",
+				"employer_name"
+			],
+			[
+				"get",
+				"get_deleted_page_text"
+			],
+			[
+				"proce",
+				"process_job_id_into_gig"
+			],
+			[
+				"prase",
+				"parsed_doc"
+			],
+			[
+				"TWITTER_TE",
+				"TWITTER_TEST_PWORD"
+			],
+			[
+				"PROCESS",
+				"process_job_id_into_gig"
+			],
+			[
+				"db",
+				"db_keyword"
+			],
+			[
+				"url",
+				"url_list"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "platinum/routes/locations.js",
+			"settings":
+			{
+				"buffer_size": 2951,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "pgoapi/LICENSE.txt",
+			"settings":
+			{
+				"buffer_size": 1143,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "platinum/.env",
+			"settings":
+			{
+				"buffer_size": 71,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "pgoapi/Dockerfile",
+			"settings":
+			{
+				"buffer_size": 183,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "pgoapi/pokecli.py",
+			"settings":
+			{
+				"buffer_size": 7464,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "pgoapi/requirements.txt",
+			"settings":
+			{
+				"buffer_size": 100,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 127.0,
+		"last_filter": "Package Control: ins",
+		"selected_items":
+		[
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"high",
+				"Highlight Whitespaces: Toggle"
+			],
+			[
+				"t",
+				"Highlight Whitespaces: Toggle"
+			],
+			[
+				"highl",
+				"Highlight Whitespaces: Toggle"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 524.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/joaoanes/pokescan",
+		"/Users/joaoanes/pokescan/pgoapi",
+		"/Users/joaoanes/pokescan/pgoapi/examples",
+		"/Users/joaoanes/pokescan/platinum",
+		"/Users/joaoanes/pokescan/platinum/bin",
+		"/Users/joaoanes/pokescan/platinum/public",
+		"/Users/joaoanes/pokescan/platinum/routes",
+		"/Users/joaoanes/pokescan/platinum/views"
+	],
+	"file_history":
+	[
+		"/Users/joaoanes/pgoapi/backend.js",
+		"/Users/joaoanes/pokescan/platinum/bin/www",
+		"/Users/joaoanes/pokescan/platinum/routes/index.js",
+		"/Users/joaoanes/pokescan/platinum/app.js",
+		"/Users/joaoanes/pokescan/pgoapi/backend.py",
+		"/Users/joaoanes/pokescan/pgoapi/config.json",
+		"/Users/joaoanes/pgoapi/Dockerfile",
+		"/Users/joaoanes/pgoapi/examples/spiral_poi_search.py",
+		"/Users/joaoanes/pgoapi/pokecli.py",
+		"/Users/joaoanes/pgoapi/config.json",
+		"/Users/joaoanes/gigscraper/app/services/gig_scraper_driver.rb",
+		"/Users/joaoanes/gigscraper/app/services/gig_scraper_drivers/we_work_remotely_gig_scraper_driver.rb",
+		"/Users/joaoanes/gigscraper/app/services/gig_scraper_drivers/stack_overflow_gig_scraper_driver.rb",
+		"/Users/joaoanes/gigscraper/app/services/gig_scraper_drivers/up_work_gig_scraper_driver.rb",
+		"/Users/joaoanes/gigscraper/spec/factories/gig.rb",
+		"/Users/joaoanes/gigscraper/app/services/job.rb",
+		"/Users/joaoanes/gigscraper/app/services/gig_score_calculator.rb",
+		"/Users/joaoanes/gigscraper/spec/services/gig_scorer_spec.rb",
+		"/Users/joaoanes/gigscraper/spec/services/gig_scraper_drivers_spec.rb",
+		"/Users/joaoanes/gigscraper/Gemfile",
+		"/Users/joaoanes/gigscraper/app/models/gig_score.rb",
+		"/Users/joaoanes/gigscraper/app/services/gig_scraper_service.rb",
+		"/Users/joaoanes/gigscraper/app/models/gig.rb",
+		"/Users/joaoanes/gigscraper/app/services/gig_scorer.rb",
+		"/Users/joaoanes/gigscraper/spec/fixtures/authentic_jobs_example_job.txt",
+		"/Users/joaoanes/gigscraper/stuff.json",
+		"/Users/joaoanes/gigscraper/spec/fixtures/up_work_jobs_list.txt",
+		"/Users/joaoanes/gigscraper/app/services/gig_scraper_drivers/authentic_jobs_gig_scraper_driver.rb",
+		"/Users/joaoanes/gigscraper/spec/fixtures/we_work_remotely_example_job.txt",
+		"/Users/joaoanes/gigscraper/spec/fixtures/we_work_remotely_final_job.txt",
+		"/Users/joaoanes/gigscraper/spec/fixtures/stack_overflow_example_job.txt",
+		"/Users/joaoanes/gigscraper/spec/fixtures/stack_overflow_final_job.txt",
+		"/Users/joaoanes/gigscraper/spec/fixtures/authentic_jobs_jobs_page.txt",
+		"/Users/joaoanes/gigscraper/spec/fixtures/we_work_remotely_example_job.html",
+		"/Users/joaoanes/gigscraper/spec/spec_helper.rb",
+		"/Users/joaoanes/gigscraper/spec/rails_helper.rb",
+		"/Users/joaoanes/gigscraper/app/models/source.rb",
+		"/Users/joaoanes/gigscraper/app/services/gig_scraper_drivers/gig_scorer.rb",
+		"/Users/joaoanes/gigscraper/app/services/job_saver.rb",
+		"/Users/joaoanes/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/joaoanes/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/joaoanes/gigscraper/app/models/employer.rb",
+		"/Users/joaoanes/gigscraper/app/services/gig_scraper_drivers/gig_scraper_driver_module.rb",
+		"/Users/joaoanes/gigscraper/app/models/job.rb"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"<current file>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"[0]",
+			"mongo",
+			"log.",
+			"log",
+			"logger",
+			"mongo",
+			"print",
+			"lat +",
+			"lat",
+			"scanf",
+			"\"on\"",
+			"print",
+			"ankara",
+			"()\n    print('Response dictionary: \\n\\r{}'.format(pprint.PrettyPrinter(indent=4).pformat(response_dict)))\n",
+			"tuning",
+			"=>",
+			"listing-header",
+			"Mock",
+			"posted",
+			"date",
+			"time",
+			"posted",
+			"/mindera",
+			"Mindera",
+			"Mindera.",
+			"Mindera",
+			"Systems Engineer @ Mindera (Porto - Portugal)",
+			"WordPress Web",
+			"sigma",
+			"Frontend Engineer",
+			"27680",
+			"Front-end Web Developer",
+			"Web De",
+			"<time",
+			"time",
+			"puts",
+			"job",
+			"init_default_keywords",
+			"trim",
+			"get_body",
+			"NOKOG",
+			"source_identifier",
+			"score_keyword",
+			"gig",
+			"transf",
+			"get_job_details_for_id",
+			"scratch",
+			"transform_job_into_gig",
+			"SAVE_JOB",
+			"save_job_as_gig",
+			"iterate_and_save_from_max_id_until"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			":",
+			"GigScraper mock job"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "platinum/routes/locations.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2951,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1470,
+								1470
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 515.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "pgoapi/LICENSE.txt",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1143,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "platinum/.env",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 71,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								71,
+								71
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "pgoapi/Dockerfile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 183,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								168,
+								168
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "pgoapi/pokecli.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7464,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4285,
+								4215
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1739.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "pgoapi/requirements.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 100,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								99,
+								99
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 100.0
+	},
+	"pinned_build_system": "",
+	"project": "pokescan.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"gig_sc",
+				"app/services/gig_scorer.rb"
+			],
+			[
+				"gig_sco",
+				"app/models/gig_score.rb"
+			],
+			[
+				"service",
+				"app/services/gig_scraper_service.rb"
+			],
+			[
+				"twitter_ads",
+				"app/services/apis/twitter_ads_service.rb"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 223.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

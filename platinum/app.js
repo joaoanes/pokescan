@@ -3,7 +3,12 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var schedule = require('node-schedule');
 var bodyParser = require('body-parser');
+
+var scanQueue = require('./routes/scanQueue.js')
+var pokeMongo = require('./routes/pokeMongo.js')
+pokeMongo = new pokeMongo()
 
 var routes = require('./routes/index');
 var locations = require('./routes/locations');
@@ -56,5 +61,19 @@ app.use(function(err, req, res, next) {
   });
 });
 
+console.log("Hello!")
+schedule.scheduleJob('/5 * * * * *', function(){
+
+    console.log("starting scanner for ")
+
+    pokeMongo.getAllScanningLocations().then(function(res){
+      console.log("these are the locations " + res)
+      res.forEach(function(loc)
+      {
+        console.log("starting scanner for " + loc.location)
+      scanQueue.start_scan(loc.location)
+      })
+    })
+});
 
 module.exports = app;

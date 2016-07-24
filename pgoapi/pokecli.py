@@ -168,22 +168,25 @@ def find_poi(api, lat, lng, db):
                             for pokemon in map_cell['wild_pokemons']:
                                 pokekey = get_key_from_pokemon(pokemon)
                                 pokemon['hides_at'] = time.time() + pokemon['time_till_hidden_ms']/1000
-                                poi['pokemons'][pokekey] = pokemon
                                 pokemon['location'] =   {'type': 'Point', 'coordinates': [float(pokemon['latitude']), float(pokemon['longitude'])]}
-
+                                pokemon['pokekey'] = pokekey
                                 del pokemon["last_modified_timestamp_ms"]
                                 del pokemon["longitude"]
                                 del pokemon["latitude"]
                                 del pokemon["encounter_id"]
+                                del pokemon["time_till_hidden_ms"]
 
-                                db.pokemon.insert(pokemon)
+                                if db.pokemon.find({"pokekey": pokekey}, {"_id": 1}).limit(1).count() == 0:
+                                    db.pokemon.insert(pokemon)
+                                    poi['pokemons'][pokekey] = pokemon
 
 
+    print(poi)
     return poi
 
 
 def get_key_from_pokemon(pokemon):
-    return '{}-{}'.format(pokemon['spawnpoint_id'], pokemon['pokemon_data']['pokemon_id'])
+    return '{}-{}-{}'.format(pokemon['spawnpoint_id'], pokemon['pokemon_data']['pokemon_id'], hex(int(time.time() + pokemon['time_till_hidden_ms']/1000)))
 
 
 def generate_spiral(starting_lat, starting_lng, step_size, step_limit):
