@@ -5,9 +5,9 @@ head
   title Pokevision SUCKS ahaha
   meta(name='generator', content='Bootply')
   meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+  link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700')
+  link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
 
-  //if lt IE 9
-  script(src='//html5shim.googlecode.com/svn/trunk/html5.js')
   link(href='stylesheets/bootstrap.min.css', rel='stylesheet')
   link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.1/bootstrap-material-design.min.css')
 
@@ -23,49 +23,43 @@ head
 
 
   #map-canvas
-  a(href="#menu-toggle" class="btn btn-default" id="menu-toggle") menu
+  a(href="#menu-toggle" class="btn btn-default" id="menu-toggle")
+    i(class="material-icons") menu
   .row#wrapper
     // Sidebar
     #sidebar-wrapper
       ul.sidebar-nav
         li.sidebar-brand
           a(href='#') Pokevision boyeee
-      ul.list-group
-        a.list-group-item
-          i.material-icons inbox
-          .bmd-list-group-col
-            p.list-group-item-heading List group item heading
-            p.list-group-item-text Icons left and right
-          i.material-icons face
+      ul.sidebar-nav.locations
 
       ol.sidebar-nav.location-form
-        button.btn.btn-primary.btn-lg(type='button', data-toggle='modal', data-target='#myModal')
+        button.btn.btn-primary.btn-lg(type='button', data-toggle='modal', data-target='#locationModal')
           | Add location
 
 
-#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+#locationModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
   .modal-dialog(role='document')
     .modal-content
       .modal-header
         button.close(type='button', data-dismiss='modal', aria-label='Close')
           span(aria-hidden='true') ×
         h4#myModalLabel.modal-title Modal title
-      .modal-body
-        form(action="/locations/" method="post")
-          fieldset.form-group
-            label.bmd-label-floating(for='exampleInputEmail1') Location
-            input#exampleInputEmail1.form-control(name='location')
-            span.bmd-help Something like "Avenida dos Aliados, Porto, Portugal"
-          fieldset.form-group
-            label.bmd-label-floating(for='exampleInputPassword1') Shorthand
-            input#exampleInputPassword1.form-control(name='shorthand')
-            span.bmd-help Must be a single word!
-          button.btn.btn-default Cancel
-          button.btn.btn-primary.btn-raised(type='submit') Submit
 
-      .modal-footer
-        button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-        button.btn.btn-primary(type='button') Save changes
+      form(action="/locations/" method="post")
+        .modal-body
+            fieldset.form-group
+              label.bmd-label-floating(for='exampleInputEmail1') Location
+              input#exampleInputEmail1.form-control(name='location')
+              span.bmd-help Something like "Avenida dos Aliados, Porto, Portugal"
+            fieldset.form-group
+              label.bmd-label-floating(for='exampleInputPassword1') Shorthand
+              input#exampleInputPassword1.form-control(name='shorthand')
+              span.bmd-help Must be a single word!
+
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+          button.btn.btn-primary(type='submit') Add location
 
 
 
@@ -83,6 +77,4 @@ script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/boots
 
 script(src='http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed')
 script(src='javascripts/scripts.js')
-script.
-  $('body').bootstrapMaterialDesign()
 

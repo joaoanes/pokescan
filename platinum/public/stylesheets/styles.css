@@ -171,6 +171,12 @@ html,body{
     height: 50px;
 }
 
+#menu-toggle i {
+    font-size: 32px;
+    position: relative;
+    left: -7px;
+}
+
 /*
  _____   _           _         _                        _
 |_   _| | |         | |       | |                      | |

@@ -70,6 +70,9 @@ function update()
         });
 
         google.maps.event.addListener(marker, 'click', function() {
+          infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
           infowindow.open(map,marker);
         });
 
@@ -117,15 +120,23 @@ function initialize()
         map.panTo(new google.maps.LatLng(selectedLocation.latLng[0], selectedLocation.latLng[1]))
         $('body').addClass('loaded');
         $('h1').css('color','#222222');
-
+        $('#sidebar-wrapper > ul.locations').append('<a class="list-group-item active"><i class="material-icons">near_me</i><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.shorthand + '</p><p class="list-group-item-text">location</p></div><i class="material-icons">face</i></a>')
       }
-      $('#sidebar-wrapper > ul').append('<li><a>' + loc.shorthand + '</a></li')
+      else
+      {
+        $('#sidebar-wrapper > ul.locations').append('<a class="list-group-item"><i class="material-icons">near_me</i><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.shorthand + '</p><p class="list-group-item-text">location</p></div><i class="material-icons">face</i></a>')
+      }
     })
 
-    $('.sidebar-nav li a').on('click', function(e){
-      var selectedShorthand = this.text
+    $('body').bootstrapMaterialDesign()
+
+    $('.sidebar-nav.locations a').on('click', function(e){
+      var selectedShorthand = $(this).find('.list-group-item-heading').text()
+      $('.list-group-item.active').toggleClass('active')
+      $(this).toggleClass('active')
       var location = _.find(locations, function(loc){return loc.shorthand === selectedShorthand})
       selectedLocation = location
+      map.panTo(new google.maps.LatLng(location.latLng[0], location.latLng[1]))
 
       pokemonValues = Object.keys(pokemans).map(key => pokemans[key]);
       pokemonValues.forEach(function(obj){
@@ -146,7 +157,9 @@ function initialize()
 
   var mapOptions = {
     center: latlng,
-    scrollWheel: false,
+    scrollWheel: true,
+    disableDefaultUI: true,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
     zoom: 13
   };
 
@@ -158,6 +171,7 @@ function initialize()
   $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+        $(this).toggleClass("active")
     });
 };
 
