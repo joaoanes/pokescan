@@ -16,9 +16,7 @@ var locationsHash = scanQueue.hash
 
 
 router.get('/all', (req, res, next) => {
-	debugger
 	pokeMongo.getAllScanningLocations().then(function(pk){res.send(pk)})
-
 });
 
 
@@ -58,6 +56,14 @@ router.get('/:location', (req, res, next) => {
 		res.send(locationsHash[location.location]) //TODO: this is retarded, I'm saving locations on the database and maintaining caches with full locations as keys
 	})
 });
+
+router.post('/', (req, res, next) => {
+	geocoder.geocode({address: req.body.location}, function(err, geo) {
+		req.body.latLng = [geo[0].latitude, geo[0].longitude]
+		pokeMongo.addLocation(req.body)
+		res.redirect(301, '/')
+	});
+})
 
 /* GET users listing. */
 
