@@ -53,7 +53,7 @@ function update()
 
         var marker = new google.maps.Marker({
           position: latLng,
-          icon: "http://localhost:27015/images/pokemon/" + pokemon.pokemon_data.pokemon_id + ".png",
+          icon: "http://pokescan.online/images/pokemon/" + pokemon.pokemon_data.pokemon_id + ".png",
           animation: google.maps.Animation.DROP
         });
         var contentString = '<div id="iw-container">' +
