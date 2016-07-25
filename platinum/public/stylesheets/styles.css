@@ -615,3 +615,60 @@ h1 {
 .sidebar-nav {
     position: relative;
 }
+
+.locations span > i:last-child {
+    display: none;
+}
+
+.locations span {
+    cursor: pointer;
+}
+
+.locations span.active {
+    background-color: #428bca;
+    border-color: #428bca;
+}
+
+.locations span:hover {
+    background-color: #efefef;
+    border-color: #efefef;
+}
+
+.locations span.active:hover {
+    background-color: #426bca;
+    border-color: #426bca;
+}
+
+.locations span.list-group-item.active.scanned .list-group-item-text, .locations span.list-group-item.scanned .list-group-item-text {
+    color: green;
+}
+
+.locations span.list-group-item.active.scanning .list-group-item-text, .locations span.list-group-item.scanning .list-group-item-text {
+    color: orange;
+}
+
+.locations span.list-group-item.active.persist > i:last-child, .locations span.list-group-item.persist > i:last-child {
+    display: block;
+
+}
+
+.locations span.list-group-item.active.scanning > i:last-child, .locations span.list-group-item.scanning > i:last-child {
+    display: block;
+}
+
+
+.locations .active a {
+    color: white;
+}
+
+.locations a {
+    width: 24px;
+    height: 24px;
+}
+
+#sidebar-wrapper button {
+    margin-top: 30px;
+}
+
+
+

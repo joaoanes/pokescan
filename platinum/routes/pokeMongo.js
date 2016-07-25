@@ -9,21 +9,21 @@ function pokeMongo(url)
 		db.collection('locations').findAndModify(
 
 				{ shorthand: "Areosa" }, {},
-				{ $setOnInsert: {location: "Igreja da Areosa, Porto, Portugal", shorthand: "Areosa", latLng: [41.1760511, -8.586719]}},
+				{ $setOnInsert: { persist: true, location: "Igreja da Areosa, Porto, Portugal", shorthand: "Areosa", latLng: [41.1760511, -8.586719]}},
 				{ new: true,
 				upsert: true }
 			)
 		db.collection('locations').findAndModify(
 
 				{shorthand: "FEUP" }, {},
-				{ $setOnInsert: {location: "Faculdade de Engenharia, Porto, Portugal", shorthand: "FEUP", latLng: [41.1785734, -8.5962233]}},
+				{ $setOnInsert: { persist: true, location: "Faculdade de Engenharia, Porto, Portugal", shorthand: "FEUP", latLng: [41.1785734, -8.5962233]}},
 				{ new: true,
 				upsert: true }
 			)
 		db.collection('locations').findAndModify(
 
 				{ shorthand: "Aliados" }, {},
-				{ $setOnInsert: { location: "Avenida dos Aliados, Porto, Portugal", shorthand: "Aliados", latLng: [41.1484572, -8.6107464] }},
+				{ $setOnInsert: { persist: true, location: "Avenida dos Aliados, Porto, Portugal", shorthand: "Aliados", latLng: [41.1484572, -8.6107464] }},
 				{ new: true,
 				upsert: true }
 			)
@@ -42,12 +42,17 @@ pokeMongo.prototype.addLocation = function(location) {
 };
 
 pokeMongo.prototype.getLocationFromShorthand = function(shorthand) {
-	return db.collection('locations').findOne({shorthand: shorthand}, {location: 1, latLng: 1, _id: 0})
+	return db.collection('locations').findOne({shorthand: shorthand}, {location: 1, latLng: 1, shorthand: 1, persist: 1, _id: 0})
 }
 
 pokeMongo.prototype.getAllScanningLocations = function()
 {
-	return db.collection('locations').find({}, {location: 1, shorthand: 1, latLng: 1}).toArray()
+	return db.collection('locations').find({persist: true}, {location: 1, shorthand: 1, latLng: 1, persist: 1}).toArray()
+}
+
+pokeMongo.prototype.getAllLocations = function()
+{
+	return db.collection('locations').find({}, {location: 1, shorthand: 1, latLng: 1, persist: 1}).toArray()
 }
 
 pokeMongo.prototype.getAllPokemonNearby = function(latLng)
@@ -58,7 +63,6 @@ pokeMongo.prototype.getAllPokemonNearby = function(latLng)
 
 pokeMongo.prototype.getLivePokemonNearby = function(latLng)
 {
-	console.log("Searching for pokemon near " + latLng)
 	var now = Date.now()/1000
 	return db.collection('pokemon').find( { location: { $nearSphere: latLng, $maxDistance: 1/6378.1}, hides_at: { $gte: now } },
 	 									  { location: 1, pokemon_data: 1, hides_at: 1, _id: 0 , pokekey: 1}

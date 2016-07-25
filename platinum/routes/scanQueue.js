@@ -10,7 +10,8 @@ var locationsHash = {}
 
 
 //LOCATIONS QUEUE STUFF
-locationQueue.process(4, (job, done) => {
+locationQueue.process(process.env.CONCURRENCY, (job, done) => {
+
 	var location = job.data['location']
 
 	locationsHash[location] = new ScanStatus(location, "SCANNING", job, done)
@@ -25,7 +26,7 @@ locationQueue.on('progress', (job, progress) => {
 	status = _.filter(locationsHash, (scanStatus) => { return scanStatus.payload.jobId == job.jobId })[0]
 	if (!status)
 	{
-		console.log("\n\n\nATTN\n\n\n" + job.jobId + "\n\n\n")
+		console.log("\n\n\nATTN\n\n\n" + job.jobId + "\n\n\n" + locationsHash)
 		return
 	}
 	if (status.status == "scanning" || status.status == "starting")
@@ -44,7 +45,7 @@ locationQueue.on('completed', (job) => {
 	if (jobsFinishCache[job.jobId])
 		status.payload = jobsFinishCache[job.jobId].join("")
 	else
-		status.payload = "FUCK"
+		status.payload = "Crashou?"
 })
 
 locationQueue.on('error', function(error) {
@@ -58,15 +59,37 @@ locationQueue.on('failed', function(job, err){
 	console.log("queue failed: " + job + " " + err)
 })
 
-var start_scan = function(location)
+var start_scan = function(location, force)
 {
-	locationQueue.add({ location: location })
+	force = force || false
+
+	if (force)
+	{
+		console.log("FORCING CREATION OF " + JSON.stringify(location))
+		locationQueue.add({ location: location })
+	}
+	else
+	{
+		if (locationsHash[location])
+		{
+			if (locationsHash[location].status == ScanStatus.statuses.SCANNING || locationsHash[location].status == ScanStatus.statuses.STARTING)
+			{
+				console.log("not running scan for " + location.location + ", not ready")
+				return
+			}
+			else
+				locationQueue.add({ location: location })
+
+		}
+		else
+			locationQueue.add({ location: location })
+	}
 }
 
 var jobsFinishCache = {}
 
 function process_finishing(status, progress) {
-	debugger
+
 	if (!jobsFinishCache[status.payload.jobId])
 		jobsFinishCache[status.payload.jobId] = []
 

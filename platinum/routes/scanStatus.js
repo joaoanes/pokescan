@@ -18,7 +18,8 @@ function ScanStatus(location, status, job, callback) {
 	console.log("starting job " + job.jobId + " for " + location)
 
 	dockerInstance.stdout.on('data', (data) => {
-		console.log(`stdout: ${data}`);
+		if (process.env.DEBUG_DOCKER)
+			console.log(`stdout: ${data}`);
 		job.progress(data)
 	})
 
@@ -38,7 +39,8 @@ function ScanStatus(location, status, job, callback) {
 statuses = {
 	SCANNED: "scanned",
 	SCANNING: "scanning",
-	STARTING: "starting"
+	STARTING: "starting",
+	FINISHED: "finished"
 }
 
 ScanStatus.statuses = statuses

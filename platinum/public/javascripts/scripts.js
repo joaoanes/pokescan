@@ -33,6 +33,12 @@ function centerOnPosition(position)
 function update()
 {
   drawCurrentLocation()
+  updateLocations()
+  $.get('/locations/all/', function(allLocations){
+    allLocations.forEach(function(richLocation){
+
+    })
+  })
 
   $.get("/locations/" + selectedLocation.shorthand + "/pokemon", function(allPokemon){
     pokemonValues = Object.keys(pokemans).map(key => pokemans[key]);
@@ -53,7 +59,7 @@ function update()
 
         var marker = new google.maps.Marker({
           position: latLng,
-          icon: "http://pokescan.online/images/pokemon/" + pokemon.pokemon_data.pokemon_id + ".png",
+          icon: "/images/pokemon/" + pokemon.pokemon_data.pokemon_id + ".png",
           animation: google.maps.Animation.DROP
         });
         var contentString = '<div id="iw-container">' +
@@ -100,6 +106,60 @@ function renderMarkers()
   })
 }
 
+
+
+function updateLocations()
+{
+  return $.get('/locations/all/', function(res){
+    locations = res
+    res.forEach(function(loc){
+      if (!selectedLocation)
+      {
+        selectedLocation = loc.location
+        map.panTo(new google.maps.LatLng(selectedLocation.latLng[0], selectedLocation.latLng[1]))
+        $('body').addClass('loaded');
+        $('h1').css('color','#222222');
+        $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item active loc-' + loc.location.shorthand + (loc.location.persist ? ' persist' : '') + '"><a href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + loc.scan.status + '</p></div><i class="material-icons">gps_fixed</i></span>')
+        $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanning")
+        $('ul.locations .loc-' + loc.location.shorthand).removeClass("finishing")
+        $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanned")
+        $('ul.locations .loc-' + loc.location.shorthand).removeClass("starting")
+
+        $('ul.locations .loc-' + loc.location.shorthand).addClass(loc.scan.status)
+
+      }
+      else
+      {
+        if ($('ul.locations .loc-' + loc.location.shorthand).length > 0)
+        {
+
+          $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanning")
+          $('ul.locations .loc-' + loc.location.shorthand).removeClass("finishing")
+          $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanned")
+          $('ul.locations .loc-' + loc.location.shorthand).removeClass("starting")
+
+          $('ul.locations .loc-' + loc.location.shorthand).addClass(loc.scan.status)
+
+          if (loc.scan.status == "scanning")
+          {
+            var text = "scanning (" + loc.scan.payload.percentage + "%)"
+          }
+          else
+          {
+            var text = loc.scan.status
+          }
+          $('ul.locations .loc-' + loc.location.shorthand).find('.list-group-item-text').text(text)
+        }
+        else
+        {
+          $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item loc-' + loc.location.shorthand + (loc.location.persist ? ' persist' : '') + '"><a href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + loc.scan.status + '</p></div><i class="material-icons">gps_fixed</i></span>')
+          $('ul.locations .loc-' + loc.location.shorthand).addClass(loc.scan.status)
+        }
+      }
+    })
+  })
+}
+
 $(document).ready(function(){/* google maps -----------------------------------------------------*/
 
 
@@ -108,35 +168,20 @@ $(document).ready(function(){/* google maps ------------------------------------
 google.maps.event.addDomListener(window, 'load', initialize);
 
 
-
 function initialize()
 {
-  $.get('/locations/all/', function(res){
-    locations = res
-    res.forEach(function(loc){
-      if (!selectedLocation)
-      {
-        selectedLocation = loc
-        map.panTo(new google.maps.LatLng(selectedLocation.latLng[0], selectedLocation.latLng[1]))
-        $('body').addClass('loaded');
-        $('h1').css('color','#222222');
-        $('#sidebar-wrapper > ul.locations').append('<a class="list-group-item active"><i class="material-icons">near_me</i><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.shorthand + '</p><p class="list-group-item-text">location</p></div><i class="material-icons">face</i></a>')
-      }
-      else
-      {
-        $('#sidebar-wrapper > ul.locations').append('<a class="list-group-item"><i class="material-icons">near_me</i><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.shorthand + '</p><p class="list-group-item-text">location</p></div><i class="material-icons">face</i></a>')
-      }
-    })
+
+  updateLocations().then(function(){
 
     $('body').bootstrapMaterialDesign()
 
-    $('.sidebar-nav.locations a').on('click', function(e){
+    $('.sidebar-nav.locations span').on('click', function(e){
       var selectedShorthand = $(this).find('.list-group-item-heading').text()
       $('.list-group-item.active').toggleClass('active')
       $(this).toggleClass('active')
-      var location = _.find(locations, function(loc){return loc.shorthand === selectedShorthand})
-      selectedLocation = location
-      map.panTo(new google.maps.LatLng(location.latLng[0], location.latLng[1]))
+      var location = _.find(locations, function(loc){return loc.location.shorthand === selectedShorthand})
+      selectedLocation = location.location
+      map.panTo(new google.maps.LatLng(location.location.latLng[0], location.location.latLng[1]))
 
       pokemonValues = Object.keys(pokemans).map(key => pokemans[key]);
       pokemonValues.forEach(function(obj){

@@ -65,10 +65,7 @@ console.log("Hello!")
 //DON'T START SCANS IF THE LAST SCAN HASN'T ENDED YET
 schedule.scheduleJob('30 * * * * *', function(){
 
-    console.log("starting scanner for ")
-
     pokeMongo.getAllScanningLocations().then(function(res){
-      console.log("these are the locations " + res)
       res.forEach(function(loc)
       {
         console.log("starting scanner for " + loc.location)
