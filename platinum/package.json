@@ -10,6 +10,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "dockerode": "^2.2.10",
+    "dotenv": "^2.0.0",
     "express": "~4.13.4",
     "geocoder": "^0.2.2",
     "jade": "~1.11.0",
