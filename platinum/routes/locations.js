@@ -29,7 +29,7 @@ router.get('/all/scan', (req, res, next) => {
       locations.forEach(function(loc)
       {
         console.log("starting scanner for " + loc.location)
-      	scanQueue.start_scan(loc.location, true)
+      	scanQueue.start_scan(loc, true)
       })
       res.send("{message: 'A-OK!'}")
     })
@@ -59,8 +59,8 @@ router.get('/:location/engage/', (req, res, next) => {
 	debugger
 	pokeMongo.getLocationFromShorthand(req.params.location).then( function(loc) {
 
-		scanQueue.start_scan(loc.location, true)
-		res.redirect(301, '/')
+		scanQueue.start_scan(loc, true)
+		res.send("{message: 'A-OK!'}")
 	})
 
 })

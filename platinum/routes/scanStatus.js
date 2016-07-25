@@ -5,12 +5,14 @@ function ScanStatus(location, status, job, callback) {
 	this.status = status || "scanning"
 	this.last_scan = null
 
+	debugger
 	var dockerInstance = spawn('docker', [
 		'run', '-i', '-a', 'stdout', '--rm', '--link', process.env.DOCKER_MONGO_NAME, 'pgoapi-runner',
 		'-u', process.env.LOGIN_USERNAME,
 		'-p', process.env.LOGIN_PASSWORD,
 		'-a', process.env.LOGIN_SERVICE,
-		'-l', location
+		'-l', location[0],
+		'-L', location[1]
 		],
 		{cwd: "../pgoapi/"}
 	)
@@ -18,8 +20,8 @@ function ScanStatus(location, status, job, callback) {
 	console.log("starting job " + job.jobId + " for " + location)
 
 	dockerInstance.stdout.on('data', (data) => {
-		if (process.env.DEBUG_DOCKER)
-			console.log(`stdout: ${data}`);
+
+		console.log(`stdout: ${data}`);
 		job.progress(data)
 	})
 

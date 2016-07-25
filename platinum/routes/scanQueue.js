@@ -14,10 +14,10 @@ locationQueue.process(process.env.CONCURRENCY, (job, done) => {
 
 	var location = job.data['location']
 
-	locationsHash[location] = new ScanStatus(location, "SCANNING", job, done)
+	locationsHash[location.location] = new ScanStatus(location.latLng, "SCANNING", job, done)
 
-	locationsHash[location].status = "starting"
-	locationsHash[location].payload = { jobId: job.jobId }
+	locationsHash[location.location].status = "starting"
+	locationsHash[location.location].payload = { jobId: job.jobId }
 
 
 });
@@ -70,9 +70,9 @@ var start_scan = function(location, force)
 	}
 	else
 	{
-		if (locationsHash[location])
+		if (locationsHash[location.location])
 		{
-			if (locationsHash[location].status == ScanStatus.statuses.SCANNING || locationsHash[location].status == ScanStatus.statuses.STARTING)
+			if (locationsHash[location.location].status == ScanStatus.statuses.SCANNING || locationsHash[location].status == ScanStatus.statuses.STARTING)
 			{
 				console.log("not running scan for " + location.location + ", not ready")
 				return

@@ -69,7 +69,7 @@ schedule.scheduleJob('30 * * * * *', function(){
       res.forEach(function(loc)
       {
         console.log("starting scanner for " + loc.location)
-      scanQueue.start_scan(loc.location)
+      scanQueue.start_scan(loc)
       })
     })
 });

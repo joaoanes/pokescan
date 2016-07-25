@@ -96,7 +96,8 @@ def init_config():
         required=required("auth_service"))
     parser.add_argument("-u", "--username", help="Username", required=required("username"))
     parser.add_argument("-p", "--password", help="Password")
-    parser.add_argument("-l", "--location", help="Location", required=required("location"))
+    parser.add_argument("-l", "--latitude", help="Latitude", required=True),
+    parser.add_argument("-L", "--longitude", help="Longitude", required=True),
     parser.add_argument("-d", "--debug", help="Debug Mode", action='store_true')
     parser.add_argument("-t", "--test", help="Only parse the specified location", action='store_true')
     parser.set_defaults(DEBUG=False, TEST=False)
@@ -127,7 +128,7 @@ def main():
         logging.getLogger("pgoapi").setLevel(logging.DEBUG)
         logging.getLogger("rpc_api").setLevel(logging.DEBUG)
 
-    position = get_pos_by_name(config.location)
+    position = (float(config.latitude), float(config.longitude), 0)
     if config.test:
         return
     uri = "mongodb://" + str(os.environ['MONGO_PORT_27017_TCP_ADDR'])
