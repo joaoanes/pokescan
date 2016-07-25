@@ -60,16 +60,21 @@ router.get('/:location/engage/', (req, res, next) => {
 
 		scanQueue.start_scan(loc, true)
 		res.redirect("http://pokescan.online")
+	}).catch(function(err){
+		console.log("error!")
 	})
 
 })
 
 
-/* GET users listing. */
-
-
 router.post('/', (req, res, next) => {
-	debugger
+	if (req.body.location == "" || req.body.shorthand == "")
+	{
+		res.redirect('/')
+		return
+	}
+
+
 	geocoder.geocode({address: req.body.location}, function(err, geo) {
 		if (geo[0] == undefined)
 		{
@@ -81,14 +86,9 @@ router.post('/', (req, res, next) => {
 		req.body.latLng = [geo[0].latitude, geo[0].longitude]
 		req.body.persist = false
 		pokeMongo.addLocation(req.body)
+		scanQueue.start_scan(req.body, true)
 		res.redirect(301, '/')
 	});
 })
-
-/* GET users listing. */
-
-
-
-// actual logic goes here
 
 module.exports = router;

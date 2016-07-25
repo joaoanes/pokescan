@@ -23,23 +23,34 @@ head
 
 
   #map-canvas
-  a(href="#menu-toggle" class="btn btn-default" id="menu-toggle")
-    i(class="material-icons") menu
   .row#wrapper
     // Sidebar
+    a(href="#menu-toggle" class="btn btn-default" id="menu-toggle")
+        i(class="material-icons") menu
     #sidebar-wrapper
-      ul.sidebar-nav
-        li.sidebar-brand
-          a(href='#') Pokevision boyeee
+
+
+      ul.sidebar-nav.header
+        #logo-area
+          .bg
+          span.logo-header Pokescan
+          span.logo-header-small better than pokevision!
+          #logo
       ul.sidebar-nav.locations
 
       ol.sidebar-nav.location-form
         button.btn.btn-primary.btn-lg(type='button', data-toggle='modal', data-target='#locationModal')
           | Add location
 
+  footer.footer
+    .container
+      p Built with love from the works of many contributors. Todo: list them
+      .version
+        small Pokescan 0.1 prealpha
 
 #locationModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
   .modal-dialog(role='document')
+
     .modal-content
       .modal-header
         button.close(type='button', data-dismiss='modal', aria-label='Close')
@@ -48,18 +59,34 @@ head
 
       form(action="/locations/" method="post")
         .modal-body
-            fieldset.form-group
-              label.bmd-label-floating(for='exampleInputEmail1') Location
-              input#exampleInputEmail1.form-control(name='location')
-              span.bmd-help Something like "Avenida dos Aliados, Porto, Portugal"
-            fieldset.form-group
-              label.bmd-label-floating(for='exampleInputPassword1') Shorthand
-              input#exampleInputPassword1.form-control(name='shorthand')
-              span.bmd-help Must be a single word!
+          .panel.panel-danger
+            .panel-heading
+              h3.panel-title Don't FUCK UP the server
+            .panel-body
+              | Adding locations is below alpha state. There's no tests, and god help us if what you input is actually invalid. What you put in feeds directly to the database, don't FUCK UP the server.
+
+          .panel.panel-default
+            .panel-heading
+              h3.panel-title Scanning locations
+            .panel-body
+              | These locations aren't automatically updated - that will come in a future update.
+              | You can perform a scan manually by clicking the arrow next to your location.
+
+          fieldset.form-group.label-floating
+            label.control-label(for='focusedInput2') Location
+            input#focusedInput2.form-control(name='location', type='text')
+            p.help-block In "STREET, CITY, COUNTRY" format. PLEASE GET THIS RIGHT.
+
+          fieldset.form-group.label-floating
+            label.control-label(for='focusedInput3') Shorthand
+            input#focusedInput3.form-control(name='shorthand', type='text')
+            p.help-block One word, something short to call this location.
+
 
         .modal-footer
           button.btn.btn-secondary(type='button', data-dismiss='modal') Close
           button.btn.btn-primary(type='submit') Add location
+
 
 
 
@@ -76,5 +103,5 @@ script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/tethe
 script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.1/bootstrap-material-design.iife.min.js')
 
 script(src='http://maps.googleapis.com/maps/api/js?key=AIzaSyC0hXf145YSG2k7E0YbcSICcoXon7K2wik&extension=.js&output=embed')
-script(src='javascripts/scripts.js')
+script(src='javascripts/pokemap.js')
 

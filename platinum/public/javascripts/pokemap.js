@@ -6,7 +6,6 @@ locations = []
 markersOnMap = []
 positionCircle = null
 
-
 function drawCurrentLocation()
 {
   if ( navigator.geolocation )
@@ -33,7 +32,6 @@ function centerOnPosition(position)
 function update()
 {
   drawCurrentLocation()
-  updateLocations()
   $.get('/locations/all/', function(allLocations){
     allLocations.forEach(function(richLocation){
 
@@ -144,6 +142,11 @@ function updateLocations()
           {
             var text = "scanning (" + loc.scan.payload.percentage + "%)"
           }
+          else if (loc.scan.status == "scanned")
+          {
+            var date = new Date(loc.scan.last_scan)
+            var text = "last scanned at " + date.getHours() + ":" + date.getMinutes()
+          }
           else
           {
             var text = loc.scan.status
@@ -152,7 +155,22 @@ function updateLocations()
         }
         else
         {
-          $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item loc-' + loc.location.shorthand + (loc.location.persist ? ' persist' : '') + '"><a href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + loc.scan.status + '</p></div><i class="material-icons">gps_fixed</i></span>')
+          if (loc.scan.status == "scanning")
+          {
+            var text = "scanning (" + loc.scan.payload.percentage + "%)"
+          }
+          else if (loc.scan.status == "scanned")
+          {
+            var text = "last scanned at " + new Date(loc.scan.last_scan)
+          }
+          else if (!loc.scan.status) {
+            var text = "no data"
+          }
+          else
+          {
+            var text = loc.scan.status
+          }
+          $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item loc-' + loc.location.shorthand + " " + (loc.location.persist ? ' persist' : '') + '"><a data-toggle="tooltip" data-placement="right" title="" data-original-title="Scan" href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + text + '</p></div><i class="material-icons">gps_fixed</i></span>')
           $('ul.locations .loc-' + loc.location.shorthand).addClass(loc.scan.status)
         }
       }
@@ -196,6 +214,7 @@ function initialize()
 
     update()
     setInterval(update, 5000)
+    setInterval(updateLocations, 500)
   })
 
   var latlng = new google.maps.LatLng(0, 0);

@@ -38,6 +38,12 @@ locationQueue.on('progress', (job, progress) => {
 locationQueue.on('completed', (job) => {
 	status = _.filter(locationsHash, (scanStatus) => { return scanStatus.payload.jobId == job.jobId })[0]
 
+	if (!status)
+	{
+		console.log("finished orphaned job, will ignore " + job.jobId)
+		return
+	}
+
 	status.status = ScanStatus.statuses.SCANNED
 
 	status.last_scan = Date.now()

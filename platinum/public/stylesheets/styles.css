@@ -26,10 +26,10 @@ html,body{
 }
 
 #map-canvas {
-	width: 100%;
+	width: 100vw;
     height:100%;
     position:absolute;
-    right:16px;
+    left: 0;
     bottom:0;
     overflow:hidden;
 }
@@ -66,6 +66,7 @@ html,body{
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
+    overflow-x: visible;
     background: white;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -167,6 +168,7 @@ html,body{
 #menu-toggle {
     width: 50px;
     position: absolute;
+
     z-index: 9001;
     height: 50px;
 }
@@ -321,8 +323,8 @@ h1 {
             -ms-transform: translateX(-100%);  /* IE 9 */
                 transform: translateX(-100%);  /* Firefox 16+, IE 10+, Opera */
 
-        -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-                transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+        -webkit-transition: all 0.3s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+                transition: all 0.3s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1.000);
     }
 
     .loaded #loader-wrapper .loader-section.section-right {
@@ -330,14 +332,14 @@ h1 {
             -ms-transform: translateX(100%);  /* IE 9 */
                 transform: translateX(100%);  /* Firefox 16+, IE 10+, Opera */
 
--webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-        transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+-webkit-transition: all 0.3s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+        transition: all 0.3s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1.000);
     }
 
     .loaded #loader {
         opacity: 0;
-        -webkit-transition: all 0.3s ease-out;
-                transition: all 0.3s ease-out;
+        -webkit-transition: all 0.2s ease-out;
+                transition: all 0.2s ease-out;
     }
     .loaded #loader-wrapper {
         visibility: hidden;
@@ -346,8 +348,8 @@ h1 {
             -ms-transform: translateY(-100%);  /* IE 9 */
                 transform: translateY(-100%);  /* Firefox 16+, IE 10+, Opera */
 
-        -webkit-transition: all 0.3s 1s ease-out;
-                transition: all 0.3s 1s ease-out;
+        -webkit-transition: all 0.3s 0.4s ease-out;
+                transition: all 0.3s 0.4s ease-out;
     }
 
     /* JavaScript Turned Off */
@@ -670,5 +672,137 @@ h1 {
     margin-top: 30px;
 }
 
+#logo {
+    display: block;
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: -80px 0 0 -45px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: red;
+
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+
+    z-index: 0;
+}
+
+    #logo:before {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        border-top-color: #efefef;
+
+        -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+        animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+    }
+
+    #logo:after {
+        content: "";
+        position: absolute;
+        top: 55px;
+        left: 55px;
+        right: 55px;
+        bottom: 55px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        border-top-color: red;
+
+        -webkit-animation: spin 0.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+          animation: spin 0.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+    }
+
+#logo-area > * {
+    opacity: 1;
+}
+
+#logo-area {
+    width: 100%;
+    height: 115px;
 
 
+}
+
+#logo-area .bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(270deg, #ddf51f, #ec0925, #0990ec);
+background-size: 600% 600%;
+
+-webkit-animation: AnimationName 15s ease infinite;
+-moz-animation: AnimationName 15s ease infinite;
+animation: AnimationName 15s ease infinite;
+    opacity: 0.9;
+}
+
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:79% 0%}
+    50%{background-position:22% 100%}
+    100%{background-position:79% 0%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:79% 0%}
+    50%{background-position:22% 100%}
+    100%{background-position:79% 0%}
+}
+@keyframes AnimationName {
+    0%{background-position:79% 0%}
+    50%{background-position:22% 100%}
+    100%{background-position:79% 0%}
+}
+
+.version {
+    position: absolute;
+    right: 3px;
+    font-size: 11px;
+    margin-top: 10px;
+    top: 3px;
+}
+
+.logo-header {
+    font-size: 36px;
+    padding-top: 30px;
+    padding-left: 20px;
+    display: block;
+    color: white;
+    position: relative;
+    z-index: 9000;
+}
+
+.logo-header-small {
+    margin-left: 20px;
+}
+
+.sidebar-nav.header {
+    overflow: hidden;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    line-height: 20px;
+    width: 100vw;
+    height: 35px;
+    z-index: 10000;
+    background-color: #f5f5f5;
+}
+
+.footer p {
+        margin-top: 11px;
+    font-size: 12px;
+    text-align: center;
+}
+
+#locationModal
+{
+    z-index: 9500;
+}
