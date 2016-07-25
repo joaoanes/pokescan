@@ -1,13 +1,15 @@
 var spawn = require('child_process').spawn
 
 function ScanStatus(location, status, job, callback) {
+
 	this.location = location
 	this.status = status || "scanning"
 	this.last_scan = null
 
 	debugger
-	var dockerInstance = spawn('docker', [
-		'run', '-i', '-a', 'stdout', '--rm', '--link', process.env.DOCKER_MONGO_NAME, 'pgoapi-runner',
+	var dockerInstance = spawn('stdbuf', [
+		'-i0', '-o0', '-e0',
+		'docker', 'run', '-i', '-a', 'stdout', '--rm', '--link', process.env.DOCKER_MONGO_NAME, 'pgoapi-runner',
 		'-u', process.env.LOGIN_USERNAME,
 		'-p', process.env.LOGIN_PASSWORD,
 		'-a', process.env.LOGIN_SERVICE,

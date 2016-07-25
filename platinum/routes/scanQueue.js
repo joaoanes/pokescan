@@ -26,7 +26,7 @@ locationQueue.on('progress', (job, progress) => {
 	status = _.filter(locationsHash, (scanStatus) => { return scanStatus.payload.jobId == job.jobId })[0]
 	if (!status)
 	{
-		console.log("\n\n\nATTN\n\n\n" + job.jobId + "\n\n\n" + locationsHash)
+		console.log("got orphaned job, will ignore " + job.jobId)
 		return
 	}
 	if (status.status == "scanning" || status.status == "starting")
