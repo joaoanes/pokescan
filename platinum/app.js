@@ -62,14 +62,13 @@ app.use(function(err, req, res, next) {
 });
 
 console.log("Hello!")
-//DON'T START SCANS IF THE LAST SCAN HASN'T ENDED YET
 schedule.scheduleJob('30 * * * * *', function(){
 
     pokeMongo.getAllScanningLocations().then(function(res){
       res.forEach(function(loc)
       {
         console.log("starting scanner for " + loc.location)
-      scanQueue.start_scan(loc)
+        scanQueue.start_scan(loc)
       })
     })
 });

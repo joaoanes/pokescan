@@ -19,7 +19,7 @@ var locationsHash = scanQueue.hash
 
 router.get('/all', (req, res, next) => {
 	pokeMongo.getAllLocations().then(function(pk){
-		pk = pk.map((location) => { return { location: location, scan: locationsHash[location.location] || {} } })
+		pk = pk.map((location) => { return { location: location, scan: locationsHash[location.location] || {message: "there is nothing here, shoo"} } })
 		res.send(pk)
 	})
 });
@@ -56,11 +56,10 @@ router.get('/:location/pokemon/', (req, res, next) => {
 })
 
 router.get('/:location/engage/', (req, res, next) => {
-	debugger
 	pokeMongo.getLocationFromShorthand(req.params.location).then( function(loc) {
 
 		scanQueue.start_scan(loc, true)
-		res.send("{message: 'A-OK!'}")
+		res.redirect("http://pokescan.online")
 	})
 
 })

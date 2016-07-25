@@ -14,9 +14,10 @@ function ScanStatus(location, status, job, callback) {
 		'-p', process.env.LOGIN_PASSWORD,
 		'-a', process.env.LOGIN_SERVICE,
 		'-l', location[0],
-		'-L', location[1]
+		'-L', location[1],
+		'-d'
 		],
-		{cwd: "../pgoapi/"}
+		{cwd: "../pgoapi/", env: process.env}
 	)
 
 	console.log("starting job " + job.jobId + " for " + location)
