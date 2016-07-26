@@ -117,7 +117,25 @@ function updateLocations()
         map.panTo(new google.maps.LatLng(selectedLocation.latLng[0], selectedLocation.latLng[1]))
         $('body').addClass('loaded');
         $('h1').css('color','#222222');
-        $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item active loc-' + loc.location.shorthand + (loc.location.persist ? ' persist' : '') + '"><a href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + loc.scan.status + '</p></div><i class="material-icons">gps_fixed</i></span>')
+        debugger
+        if (loc.scan.status == "scanning")
+          {
+            var text = "scanning (" + loc.scan.payload.percentage + "%)"
+          }
+          else if (loc.scan.status == "scanned")
+          {
+            var date = new Date(loc.scan.last_scan)
+            var text = "last scanned at " + date.getHours() + ":" + date.getMinutes()
+          }
+          else if (!loc.scan.status) {
+            var text = "no data"
+          }
+          else
+          {
+            var text = loc.scan.status
+          }
+
+        $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item active loc-' + loc.location.shorthand + (loc.location.persist ? ' persist' : '') + '"><a href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + text + '</p></div><i class="material-icons">gps_fixed</i></span>')
         $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanning")
         $('ul.locations .loc-' + loc.location.shorthand).removeClass("finishing")
         $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanned")
