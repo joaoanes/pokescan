@@ -75,7 +75,7 @@ router.post('/', (req, res, next) => {
 	}
 
 
-	geocoder.geocode({address: req.body.location}).then( (err, geo) => {
+	geocoder.geocode({address: req.body.location}).then( (geo, err) => {
 		if (geo[0] == undefined)
 		{
 			console.log("MASSIVE ERROR, GEOCODER FAILURE")
