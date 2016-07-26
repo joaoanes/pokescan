@@ -68,14 +68,14 @@ router.get('/:location/engage/', (req, res, next) => {
 
 
 router.post('/', (req, res, next) => {
-	if (req.body.location == "" || req.body.shorthand == "")
+	if (req.body.location == "" || req.body.shorthand == "" || req.body.shorthand.split(" ").length != 1)
 	{
 		res.redirect('/')
 		return
 	}
 
 
-	geocoder.geocode({address: req.body.location}, function(err, geo) {
+	geocoder.geocode({address: req.body.location}).then( (err, geo) => {
 		if (geo[0] == undefined)
 		{
 			console.log("MASSIVE ERROR, GEOCODER FAILURE")
@@ -88,6 +88,8 @@ router.post('/', (req, res, next) => {
 		pokeMongo.addLocation(req.body)
 		scanQueue.start_scan(req.body, true)
 		res.redirect(301, '/')
+	}).catch( (err) => {
+		console.log(err)
 	});
 })
 

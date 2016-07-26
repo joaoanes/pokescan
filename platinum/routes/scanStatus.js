@@ -6,7 +6,6 @@ function ScanStatus(location, status, job, callback) {
 	this.status = status || "scanning"
 	this.last_scan = null
 
-	debugger
 	var dockerInstance = spawn('stdbuf', [
 		'-i0', '-o0', '-e0',
 		'docker', 'run', '-i', '-a', 'stdout', '--rm', '--link', process.env.DOCKER_MONGO_NAME, 'pgoapi-runner',
