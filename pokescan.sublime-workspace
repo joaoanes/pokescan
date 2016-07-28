@@ -4,20 +4,128 @@
 		"selected_items":
 		[
 			[
-				"pro",
-				"progress"
+				"margin",
+				"margin-left"
 			],
 			[
-				"job",
-				"jobId"
+				"marg",
+				"margin-top"
+			],
+			[
+				"loc",
+				"locationsHash"
+			],
+			[
+				"locat",
+				"location"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"upd",
+				"updateLocations"
+			],
+			[
+				"backg",
+				"background-color"
+			],
+			[
+				"lo",
+				"location"
+			],
+			[
+				"all",
+				"allLocations"
 			],
 			[
 				"loca",
 				"location"
 			],
 			[
-				"loc",
-				"location"
+				"stat",
+				"statuses"
+			],
+			[
+				"toggle",
+				"toggleClass"
+			],
+			[
+				"pok",
+				"pokeMongo"
+			],
+			[
+				"padd",
+				"padding-top"
+			],
+			[
+				"poke",
+				"pokekey"
+			],
+			[
+				"marke",
+				"marketPokemonsMap"
+			],
+			[
+				"po",
+				"pokemon_id"
+			],
+			[
+				"marker",
+				"markersOnMap"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"la",
+				"latLng"
+			],
+			[
+				"positio",
+				"positionCircle"
+			],
+			[
+				"pOKE",
+				"pokekey"
+			],
+			[
+				"mark",
+				"markersOnMap"
+			],
+			[
+				"pokem",
+				"pokemans"
+			],
+			[
+				"POKE",
+				"pokeMongo"
+			],
+			[
+				"job",
+				"job"
+			],
+			[
+				"pro",
+				"prototype"
+			],
+			[
+				"start",
+				"start_scan"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"proc",
+				"process_single_line"
+			],
+			[
+				"Scan",
+				"ScanStatus"
 			],
 			[
 				"locatio",
@@ -26,10 +134,6 @@
 			[
 				"docker",
 				"dockerInstance"
-			],
-			[
-				"locat",
-				"locationsHash"
 			],
 			[
 				"gig_a_",
@@ -127,15 +231,24 @@
 			"file": "platinum/routes/locations.js",
 			"settings":
 			{
-				"buffer_size": 2951,
+				"buffer_size": 2320,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "pgoapi/LICENSE.txt",
+			"contents": "Changed port\nAdded concurrency env\nAdded locations update (just status for now)\nFixed images URL\nAdded correct contextual aware icons\nAdded persistence to locations\n",
 			"settings":
 			{
-				"buffer_size": 1143,
+				"buffer_size": 165,
+				"line_ending": "Unix",
+				"name": "Changed port"
+			}
+		},
+		{
+			"file": "pgoapi/pokecli.py",
+			"settings":
+			{
+				"buffer_size": 7870,
 				"line_ending": "Unix"
 			}
 		},
@@ -143,31 +256,109 @@
 			"file": "platinum/.env",
 			"settings":
 			{
-				"buffer_size": 71,
+				"buffer_size": 130,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "pgoapi/Dockerfile",
+			"file": "platinum/app.js",
 			"settings":
 			{
-				"buffer_size": 183,
+				"buffer_size": 1990,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "pgoapi/pokecli.py",
+			"contents": "Fixed cron scheduling\nFixed map css\nFixed up UI\n\nAdded logo to navbar\nFixed zindexes\nAdded safeguards to location add\nLocation now scans after being added\nAdded warnings on locagiton add",
 			"settings":
 			{
-				"buffer_size": 7464,
+				"buffer_size": 186,
+				"line_ending": "Unix",
+				"name": "Fixed cron scheduling"
+			}
+		},
+		{
+			"file": "platinum/routes/pokeMongo.js",
+			"settings":
+			{
+				"buffer_size": 2299,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "pgoapi/requirements.txt",
+			"file": "platinum/routes/index.js",
 			"settings":
 			{
-				"buffer_size": 100,
+				"buffer_size": 208,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "platinum/routes/scanQueue.js",
+			"settings":
+			{
+				"buffer_size": 3107,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "platinum/routes/scanStatus.js",
+			"settings":
+			{
+				"buffer_size": 1203,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "#",
+			"file": "README.md",
+			"file_size": 0,
+			"file_write_time": 131139563820000000,
+			"settings":
+			{
+				"buffer_size": 1,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "platinum/public/javascripts/pokemap.js",
+			"settings":
+			{
+				"buffer_size": 8516,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "platinum/public/stylesheets/styles.css",
+			"settings":
+			{
+				"buffer_size": 17595,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "platinum/views/index.jade",
+			"settings":
+			{
+				"buffer_size": 3970,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "GAPI_KEY=AIzaSyDF9ANJ2G6A7PeeXr_e2L8iKE6jCNUDkpk\n",
+			"file": "/Users/joaoanes/google-maps-react/.env.example",
+			"file_size": 49,
+			"file_write_time": 131138008270000000,
+			"settings":
+			{
+				"buffer_size": 49,
 				"line_ending": "Unix"
 			}
 		}
@@ -179,10 +370,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 127.0,
-		"last_filter": "Package Control: ins",
+		"height": 147.0,
+		"last_filter": "reinde",
 		"selected_items":
 		[
+			[
+				"reinde",
+				"Indentation: Reindent Lines"
+			],
 			[
 				"Package Control: ins",
 				"Package Control: Install Package"
@@ -208,7 +403,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 524.0
+		"width": 467.0
 	},
 	"console":
 	{
@@ -229,16 +424,34 @@
 	"expanded_folders":
 	[
 		"/Users/joaoanes/pokescan",
-		"/Users/joaoanes/pokescan/pgoapi",
 		"/Users/joaoanes/pokescan/pgoapi/examples",
+		"/Users/joaoanes/pokescan/pgoapi/pgoapi",
 		"/Users/joaoanes/pokescan/platinum",
-		"/Users/joaoanes/pokescan/platinum/bin",
 		"/Users/joaoanes/pokescan/platinum/public",
+		"/Users/joaoanes/pokescan/platinum/public/javascripts",
+		"/Users/joaoanes/pokescan/platinum/public/stylesheets",
 		"/Users/joaoanes/pokescan/platinum/routes",
 		"/Users/joaoanes/pokescan/platinum/views"
 	],
 	"file_history":
 	[
+		"/Users/joaoanes/pokescan/platinum/routes/scanStatus.js",
+		"/Users/joaoanes/pokescan/platinum/Procfile",
+		"/Users/joaoanes/pokescan/platinum/.env",
+		"/Users/joaoanes/pokescan/pgoapi/Dockerfile",
+		"/Users/joaoanes/pokescan/pgoapi/pokecli.py",
+		"/Users/joaoanes/react-google-maps_examples_simple-map/src/views/index.html.js",
+		"/Users/joaoanes/google-maps-react/examples/Container.js",
+		"/Users/joaoanes/google-maps-react/examples/index.js",
+		"/Users/joaoanes/google-maps-react/examples/components/clickableMarkers.js",
+		"/Users/joaoanes/google-maps-react/src/index.js",
+		"/Users/joaoanes/pokescan/platinum/views/index.jade",
+		"/Users/joaoanes/pokescan/platinum/public/stylesheets/styles.css",
+		"/Users/joaoanes/Downloads/startbootstrap-simple-sidebar-1.0.6/index.html",
+		"/Users/joaoanes/pokescan/platinum/public/javascripts/scripts.js",
+		"/Users/joaoanes/Downloads/css3-preloader-transition-1125/css3-preloader-transition-finish/index.html",
+		"/Users/joaoanes/pokescan/platinum/views/index.html",
+		"/Users/joaoanes/pokescan/pgoapi/requirements.txt",
 		"/Users/joaoanes/pgoapi/backend.js",
 		"/Users/joaoanes/pokescan/platinum/bin/www",
 		"/Users/joaoanes/pokescan/platinum/routes/index.js",
@@ -301,6 +514,85 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"animation",
+			"debugger",
+			"scanning",
+			"tooltip",
+			"scanned",
+			"sidebar-wrapper",
+			"wrapper",
+			"sidebar-wrapper",
+			"anima",
+			"scan",
+			"update",
+			"debug",
+			"redir",
+			"get_pos_by_name",
+			"start_scan",
+			"parser",
+			"start_scan",
+			"redirect",
+			"redir",
+			"debugger",
+			"ATTN",
+			",\n",
+			"scan",
+			"locations",
+			"/locations",
+			"selected",
+			"force",
+			"env",
+			"err",
+			"options",
+			"menu",
+			"modal",
+			"animate",
+			"material",
+			"click",
+			"geocod",
+			"form",
+			"000",
+			"bootstrap.m",
+			"= null",
+			"pokemans[",
+			"pokemans =",
+			"markerPo",
+			"pokemans = {}",
+			".map",
+			"map",
+			"pokemans",
+			".setMap(",
+			"pokemans",
+			"selectedLocation",
+			"centerOnP",
+			"selectedLoc",
+			"locationsHash",
+			"FEUP",
+			"loader-wrapper",
+			"a",
+			"routemap",
+			"MongoClient",
+			"db",
+			"new Scan",
+			".jobId",
+			"scanStatus",
+			"scanstatus",
+			"new ScanStatus",
+			"ScanStatus",
+			"locationQueue",
+			"ScanStatus",
+			"job",
+			"console",
+			"status",
+			"jobsFinishCache",
+			"join",
+			"location",
+			"locationsHash",
+			"join",
+			"jobId",
+			"Scan",
+			"statuses",
+			"jobid",
 			"[0]",
 			"mongo",
 			"log.",
@@ -349,9 +641,7 @@
 			"get_job_details_for_id",
 			"scratch",
 			"transform_job_into_gig",
-			"SAVE_JOB",
-			"save_job_as_gig",
-			"iterate_and_save_from_max_id_until"
+			"SAVE_JOB"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -371,7 +661,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 9,
 			"sheets":
 			[
 				{
@@ -380,15 +670,132 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2951,
+						"buffer_size": 2320,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1470,
-								1470
+								2284,
+								2284
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 734.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 165,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								165
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Changed port",
+							"default_dir": "/Users/joaoanes/pokescan",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "pgoapi/pokecli.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7870,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4128,
+								4133
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1541.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "platinum/.env",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 130,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								130,
+								130
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "platinum/app.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1990,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1931,
+								1941
 							]
 						],
 						"settings":
@@ -398,19 +805,77 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 515.0,
+						"translation.y": 517.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "pgoapi/LICENSE.txt",
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								186
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Fixed cron scheduling",
+							"default_dir": "/Users/joaoanes/pokescan",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "platinum/routes/pokeMongo.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2299,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1387,
+								1387
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "platinum/routes/index.js",
 					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 1143,
+						"buffer_size": 208,
 						"regions":
 						{
 						},
@@ -423,36 +888,7 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "platinum/.env",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 71,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								71,
-								71
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -462,78 +898,226 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "pgoapi/Dockerfile",
+					"buffer": 8,
+					"file": "platinum/routes/scanQueue.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 183,
+						"buffer_size": 3107,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								168,
-								168
+								1834,
+								1834
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"open_with_edit": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 767.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "pgoapi/pokecli.py",
+					"buffer": 9,
+					"file": "platinum/routes/scanStatus.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7464,
+						"buffer_size": 1203,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4285,
-								4215
+								185,
+								185
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1739.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "pgoapi/requirements.txt",
+					"buffer": 10,
+					"file": "README.md",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 100,
+						"buffer_size": 1,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								99,
-								99
+								1,
+								1
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "platinum/public/javascripts/pokemap.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8516,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3734,
+								3734
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "platinum/public/stylesheets/styles.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17595,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14881,
+								14881
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 11467.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "platinum/views/index.jade",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3970,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3963,
+								3963
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 952.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"default_dir": "/Users/joaoanes/pokescan",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "/Users/joaoanes/google-maps-react/.env.example",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 49,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								21,
+								21
 							]
 						],
 						"settings":
@@ -544,7 +1128,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 15,
 					"type": "text"
 				}
 			]

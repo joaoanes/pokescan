@@ -31,10 +31,10 @@ import json
 import time
 import struct
 import random
-import pprint
 import logging
 import requests
 import argparse
+import pprint
 
 from pgoapi import PGoApi
 from pgoapi.utilities import f2i, h2f
@@ -49,6 +49,8 @@ log = logging.getLogger(__name__)
 def get_pos_by_name(location_name):
     geolocator = GoogleV3()
     loc = geolocator.geocode(location_name)
+    if not loc:
+        return None
 
     log.info('Your given location: %s', loc.address.encode('utf-8'))
     log.info('lat/long/alt: %s %s %s', loc.latitude, loc.longitude, loc.altitude)
@@ -130,6 +132,9 @@ def main():
         logging.getLogger("rpc_api").setLevel(logging.DEBUG)
 
     position = get_pos_by_name(config.location)
+    if not position:
+        return
+        
     if config.test:
         return
 
@@ -147,10 +152,12 @@ def main():
     # get player profile call
     # ----------------------
     api.get_player()
-    api.get_inventory()
 
     # execute the RPC call
     response_dict = api.call()
+
+    # apparently new dict has binary data in it, so formatting it with this method no longer works, pprint works here but there are other alternatives    
+    # print('Response dictionary: \n\r{}'.format(json.dumps(response_dict, indent=2)))
     print('Response dictionary: \n\r{}'.format(pprint.PrettyPrinter(indent=4).pformat(response_dict)))
     find_poi(api, position[0], position[1])
 
@@ -164,7 +171,7 @@ def find_poi(api, lat, lng):
         lng = coord['lng']
         api.set_position(lat, lng, 0)
 
-
+        
         #get_cellid was buggy -> replaced through get_cell_ids from pokecli
         #timestamp gets computed a different way:
         cell_ids = get_cell_ids(lat, lng)
@@ -173,15 +180,17 @@ def find_poi(api, lat, lng):
         response_dict = api.call()
         if 'status' in response_dict['responses']['GET_MAP_OBJECTS']:
             if response_dict['responses']['GET_MAP_OBJECTS']['status'] == 1:
-                    for map_cell in response_dict['responses']['GET_MAP_OBJECTS']['map_cells']:
-                        if 'wild_pokemons' in map_cell:
-                            for pokemon in map_cell['wild_pokemons']:
-                                pokekey = get_key_from_pokemon(pokemon)
-                                pokemon['hides_at'] = time.time() + pokemon['time_till_hidden_ms']/1000
-                                poi['pokemons'][pokekey] = pokemon
+                for map_cell in response_dict['responses']['GET_MAP_OBJECTS']['map_cells']:
+                    if 'wild_pokemons' in map_cell:
+                        for pokemon in map_cell['wild_pokemons']:
+                            pokekey = get_key_from_pokemon(pokemon)
+                            pokemon['hides_at'] = time.time() + pokemon['time_till_hidden_ms']/1000
+                            poi['pokemons'][pokekey] = pokemon
 
         # time.sleep(0.51)
-    print('POI dictionary: \n\r{}'.format(json.dumps(poi, indent=2)))
+    # new dict, binary data
+    # print('POI dictionary: \n\r{}'.format(json.dumps(poi, indent=2)))
+    print('POI dictionary: \n\r{}'.format(pprint.PrettyPrinter(indent=4).pformat(poi)))
     print('Open this in a browser to see the path the spiral search took:')
     print_gmaps_dbug(coords)
 

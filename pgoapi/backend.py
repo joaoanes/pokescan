@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+from __future__ import division
 """
 pgoapi - Pokemon Go API
 Copyright (c) 2016 tjado <https://github.com/tejado>
@@ -31,6 +31,7 @@ import json
 import time
 import struct
 import pprint
+import random
 import logging
 import requests
 import argparse
@@ -43,20 +44,17 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from pgoapi import pgoapi
 from pgoapi import utilities as util
 
+from pymongo import MongoClient, GEOSPHERE
+
 # other stuff
 from google.protobuf.internal import encoder
 from geopy.geocoders import GoogleV3
 from s2sphere import Cell, CellId, LatLng
 
 
-log = logging.getLogger(__name__)
-
 def get_pos_by_name(location_name):
     geolocator = GoogleV3()
     loc = geolocator.geocode(location_name, timeout=10)
-
-    log.info('Your given location: %s', loc.address.encode('utf-8'))
-    log.info('lat/long/alt: %s %s %s', loc.latitude, loc.longitude, loc.altitude)
 
     return (loc.latitude, loc.longitude, loc.altitude)
 
@@ -97,7 +95,8 @@ def init_config():
         required=required("auth_service"))
     parser.add_argument("-u", "--username", help="Username", required=required("username"))
     parser.add_argument("-p", "--password", help="Password")
-    parser.add_argument("-l", "--location", help="Location", required=required("location"))
+    parser.add_argument("-l", "--latitude", help="Latitude", required=True),
+    parser.add_argument("-L", "--longitude", help="Longitude", required=True),
     parser.add_argument("-d", "--debug", help="Debug Mode", action='store_true')
     parser.add_argument("-t", "--test", help="Only parse the specified location", action='store_true')
     parser.set_defaults(DEBUG=False, TEST=False)
@@ -109,26 +108,15 @@ def init_config():
             config.__dict__[key] = str(load[key])
 
     if config.__dict__["password"] is None:
-        log.info("Secure Password Input (if there is no password prompt, use --password <pw>):")
         config.__dict__["password"] = getpass.getpass()
 
     if config.auth_service not in ['ptc', 'google']:
-      log.error("Invalid Auth service specified! ('ptc' or 'google')")
       return None
 
     return config
 
 
 def main():
-    # log settings
-    # log format
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(module)10s] [%(levelname)5s] %(message)s')
-    # log level for http request class
-    logging.getLogger("requests").setLevel(logging.WARNING)
-    # log level for main pgoapi class
-    logging.getLogger("pgoapi").setLevel(logging.INFO)
-    # log level for internal pgoapi class
-    logging.getLogger("rpc_api").setLevel(logging.INFO)
 
     config = init_config()
     if not config:
@@ -139,57 +127,137 @@ def main():
         logging.getLogger("pgoapi").setLevel(logging.DEBUG)
         logging.getLogger("rpc_api").setLevel(logging.DEBUG)
 
-    position = get_pos_by_name(config.location)
+    position = (float(config.latitude), float(config.longitude), 0)
     if config.test:
         return
+    uri = "mongodb://" + str(os.environ['MONGO_PORT_27017_TCP_ADDR'])
+    mongoClient = MongoClient( uri )
+    db = mongoClient.pokemon
+    db.pokemon.create_index([("location", GEOSPHERE)])
 
     # instantiate pgoapi
     api = pgoapi.PGoApi()
 
-    # provide player position on the earth
     api.set_position(*position)
 
     if not api.login(config.auth_service, config.username, config.password):
         return
 
-    # chain subrequests (methods) into one RPC call
+    poi = find_poi_retry_aware(api, position[0], position[1], db)
 
-    # get player profile call
-    # ----------------------
-    api.get_player()
+def find_poi(api, lat, lng, db):
+    poi = {'pokemons': {}, 'forts': []}
+    step_size = 0.0015
+    step_limit = 49
+    coords = generate_spiral(lat, lng, step_size, step_limit)
+    for coord in coords:
 
-    # get inventory call
-    # ----------------------
-    api.get_inventory()
+        lat = coord['lat']
+        lng = coord['lng']
+        api.set_position(lat, lng, 0)
+        print( format(((coords.index(coord) + 1) / len(coords) * 100), ".2f") + " complete, at " + str(lat) + " " + str(lng) )
 
-    # get map objects call
-    # repeated fields (e.g. cell_id and since_timestamp_ms in get_map_objects) can be provided over a list
-    # ----------------------
-    cell_ids = get_cell_ids(position[0], position[1])
-    timestamps = [0,] * len(cell_ids)
-    api.get_map_objects(latitude = util.f2i(position[0]), longitude = util.f2i(position[1]), since_timestamp_ms = timestamps, cell_id = cell_ids)
+        cell_ids = get_cell_ids(lat, lng)
+        timestamps = [0,] * len(cell_ids)
+        api.get_map_objects(latitude = util.f2i(lat), longitude = util.f2i(lng), since_timestamp_ms = timestamps, cell_id = cell_ids)
+        response_dict = api.call()
+        if 'status' in response_dict['responses']['GET_MAP_OBJECTS']:
+            if response_dict['responses']['GET_MAP_OBJECTS']['status'] == 1:
+                    for map_cell in response_dict['responses']['GET_MAP_OBJECTS']['map_cells']:
+                        if 'wild_pokemons' in map_cell:
+                            for pokemon in map_cell['wild_pokemons']:
+                                pokekey = get_key_from_pokemon(pokemon)
+                                pokemon['hides_at'] = time.time() + pokemon['time_till_hidden_ms']/1000
+                                pokemon['location'] =   {'type': 'Point', 'coordinates': [float(pokemon['latitude']), float(pokemon['longitude'])]}
+                                pokemon['pokekey'] = pokekey
+                                del pokemon["last_modified_timestamp_ms"]
+                                del pokemon["longitude"]
+                                del pokemon["latitude"]
+                                del pokemon["encounter_id"]
+                                del pokemon["time_till_hidden_ms"]
 
-    # spin a fort
-    # ----------------------
-    #fortid = '<your fortid>'
-    #lng = <your longitude>
-    #lat = <your latitude>
-    #api.fort_search(fort_id=fortid, fort_latitude=lat, fort_longitude=lng, player_latitude=f2i(position[0]), player_longitude=f2i(position[1]))
+                                if db.pokemon.find({"pokekey": pokekey}, {"_id": 1}).limit(1).count() == 0:
+                                    db.pokemon.insert(pokemon)
+                                    poi['pokemons'][pokekey] = pokemon
 
-    # release/transfer a pokemon and get candy for it
-    # ----------------------
-    #api.release_pokemon(pokemon_id = <your pokemonid>)
 
-    # get download settings call
-    # ----------------------
-    #api.download_settings(hash="05daf51635c82611d1aac95c0b051d3ec088a930")
+    print(poi)
+    return poi
 
-    # execute the RPC call
-    response_dict = api.call()
-    print('Response dictionary: \n\r{}'.format(pprint.PrettyPrinter(indent=4).pformat(response_dict)))
 
-    # alternative:
-    # api.get_player().get_inventory().get_map_objects().download_settings(hash="05daf51635c82611d1aac95c0b051d3ec088a930").call()
+def find_poi_retry_aware(api, lat, lng, db):
+    poi = {'pokemons': {}, 'forts': []}
+    step_size = 0.0015
+    step_limit = 49
+    coords = generate_spiral(lat, lng, step_size, step_limit)
+    for coord in coords:
+
+        lat = coord['lat']
+        lng = coord['lng']
+        api.set_position(lat, lng, 0)
+        print( format(((coords.index(coord) + 1) / len(coords) * 100), ".2f") + " complete, at " + str(lat) + " " + str(lng) )
+
+        cell_ids = get_cell_ids(lat, lng)
+        timestamps = [0,] * len(cell_ids)
+
+        while True:
+            api.get_map_objects(latitude = util.f2i(lat), longitude = util.f2i(lng), since_timestamp_ms = timestamps, cell_id = cell_ids)
+            response_dict = api.call()
+            if response_dict['status_code'] == 1:
+                break
+            #print("ahahah sucker")
+
+        if 'status' in response_dict['responses']['GET_MAP_OBJECTS']:
+            if response_dict['responses']['GET_MAP_OBJECTS']['status'] == 1:
+                    for map_cell in response_dict['responses']['GET_MAP_OBJECTS']['map_cells']:
+                        if 'wild_pokemons' in map_cell:
+                            for pokemon in map_cell['wild_pokemons']:
+                                pokekey = get_key_from_pokemon(pokemon)
+                                pokemon['hides_at'] = time.time() + pokemon['time_till_hidden_ms']/1000
+                                pokemon['location'] =   {'type': 'Point', 'coordinates': [float(pokemon['latitude']), float(pokemon['longitude'])]}
+                                pokemon['pokekey'] = pokekey
+                                del pokemon["last_modified_timestamp_ms"]
+                                del pokemon["longitude"]
+                                del pokemon["latitude"]
+                                del pokemon["encounter_id"]
+                                del pokemon["time_till_hidden_ms"]
+
+                                if db.pokemon.find({"pokekey": pokekey}, {"_id": 1}).limit(1).count() == 0:
+                                    db.pokemon.insert(pokemon)
+                                    poi['pokemons'][pokekey] = pokemon
+
+
+    print(poi)
+    return poi
+
+def get_key_from_pokemon(pokemon):
+    return '{}-{}-{}'.format(pokemon['spawnpoint_id'], pokemon['pokemon_data']['pokemon_id'], hex(int(time.time() + pokemon['time_till_hidden_ms']/1000)))
+
+
+def generate_spiral(starting_lat, starting_lng, step_size, step_limit):
+    coords = [{'lat': starting_lat, 'lng': starting_lng}]
+    steps,x,y,d,m = 1, 0, 0, 1, 1
+    rlow = 0.0
+    rhigh = 0.0005
+
+    while steps < step_limit:
+        while 2 * x * d < m and steps < step_limit:
+            x = x + d
+            steps += 1
+            lat = x * step_size + starting_lat + random.uniform(rlow, rhigh)
+            lng = y * step_size + starting_lng + random.uniform(rlow, rhigh)
+            coords.append({'lat': lat, 'lng': lng})
+        while 2 * y * d < m and steps < step_limit:
+            y = y + d
+            steps += 1
+            lat = x * step_size + starting_lat + random.uniform(rlow, rhigh)
+            lng = y * step_size + starting_lng + random.uniform(rlow, rhigh)
+            coords.append({'lat': lat, 'lng': lng})
+
+        d = -1 * d
+        m = m + 1
+    return coords
+
 
 if __name__ == '__main__':
     main()
