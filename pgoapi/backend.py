@@ -231,7 +231,7 @@ def find_poi_retry_aware(api, lat, lng, db):
     return poi
 
 def get_key_from_pokemon(pokemon):
-    return '{}-{}-{}'.format(pokemon['spawnpoint_id'], pokemon['pokemon_data']['pokemon_id'], hex(int(time.time() + pokemon['time_till_hidden_ms']/1000)))
+    return '{}-{}-{}'.format(pokemon['spawn_point_id'], pokemon['pokemon_data']['pokemon_id'], hex(int(time.time() + pokemon['time_till_hidden_ms']/1000)))
 
 
 def generate_spiral(starting_lat, starting_lng, step_size, step_limit):
