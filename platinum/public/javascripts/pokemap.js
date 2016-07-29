@@ -135,26 +135,17 @@ function updateLocations()
             var text = loc.scan.status
           }
 
-        $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item active loc-' + loc.location.shorthand + (loc.location.persist ? ' persist' : '') + '"><a href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + text + '</p></div><i class="material-icons">gps_fixed</i></span>')
-        $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanning")
-        $('ul.locations .loc-' + loc.location.shorthand).removeClass("finishing")
-        $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanned")
-        $('ul.locations .loc-' + loc.location.shorthand).removeClass("starting")
+        $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item active loc-' + loc.location.shorthand + (loc.location.persist ? ' persist' : '') + '"><a class="scan-button" href="#" data-href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + text + '</p></div><i class="material-icons">gps_fixed</i></span>')
 
-        $('ul.locations .loc-' + loc.location.shorthand).addClass(loc.scan.status)
+        clearStatusClasses($('ul.locations .loc-' + loc.location.shorthand),loc.scan.status)
 
       }
       else
       {
         if ($('ul.locations .loc-' + loc.location.shorthand).length > 0)
         {
+          clearStatusClasses($('ul.locations .loc-' + loc.location.shorthand),loc.scan.status)
 
-          $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanning")
-          $('ul.locations .loc-' + loc.location.shorthand).removeClass("finishing")
-          $('ul.locations .loc-' + loc.location.shorthand).removeClass("scanned")
-          $('ul.locations .loc-' + loc.location.shorthand).removeClass("starting")
-
-          $('ul.locations .loc-' + loc.location.shorthand).addClass(loc.scan.status)
 
           if (loc.scan.status == "scanning")
           {
@@ -188,7 +179,7 @@ function updateLocations()
           {
             var text = loc.scan.status
           }
-          $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item loc-' + loc.location.shorthand + " " + (loc.location.persist ? ' persist' : '') + '"><a data-toggle="tooltip" data-placement="right" title="" data-original-title="Scan" href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + text + '</p></div><i class="material-icons">gps_fixed</i></span>')
+          $('#sidebar-wrapper > ul.locations').append('<span class="list-group-item loc-' + loc.location.shorthand + " " + (loc.location.persist ? ' persist' : '') + '"><a class="scan-button" data-toggle="tooltip" data-placement="right" title="" data-original-title="Scan" href="#" data-href="/locations/' + loc.location.shorthand + '/engage/"><i class="material-icons">near_me</i></a><div class="bmd-list-group-col"><p class="list-group-item-heading">' + loc.location.shorthand + '</p><p class="list-group-item-text">' + text + '</p></div><i class="material-icons">gps_fixed</i></span>')
           $('ul.locations .loc-' + loc.location.shorthand).addClass(loc.scan.status)
         }
       }
@@ -196,10 +187,30 @@ function updateLocations()
   })
 }
 
-$(document).ready(function(){/* google maps -----------------------------------------------------*/
+function clearStatusClasses($element,className)
+{
+  $element.removeClass("scanning")
+  $element.removeClass("finishing")
+  $element.removeClass("scanned")
+  $element.removeClass("starting")
+  if (className !== null)
+  {
+    $element.addClass(className);
+  }
+}
+
+$(document).ready(function(){
+
+  $(document).on("click", "a.scan-button", function(ev) {
+    $a=$(this);
+    $.getJSON($a.data("href"),function(data)
+    {
+      clearStatusClasses($a.parent(),"starting")
+    });
+  });
 
 
-
+/* google maps -----------------------------------------------------*/
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -258,7 +269,5 @@ function initialize()
 };
 
 /* end google maps -----------------------------------------------------*/
-
-
 
 });
