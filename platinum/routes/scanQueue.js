@@ -10,7 +10,8 @@ var locationsHash = {}
 
 
 //LOCATIONS QUEUE STUFF
-locationQueue.process(process.env.CONCURRENCY, (job, done) => {
+
+locationQueue.process(parseInt(process.env.CONCURRENCY), (job, done) => {
 
 	var location = job.data['location']
 

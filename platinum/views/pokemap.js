@@ -5,6 +5,8 @@ var markerPokemonsMap = {}
 var locations = []
 var markersOnMap = []
 var positionCircle = null
+var map
+var pokemonValues
 
 function drawCurrentLocation()
 {
@@ -117,7 +119,7 @@ function updateLocations()
         map.panTo(new google.maps.LatLng(selectedLocation.latLng[0], selectedLocation.latLng[1]))
         $('body').addClass('loaded');
         $('h1').css('color','#222222');
-        debugger
+
         if (loc.scan.status == "scanning")
           {
             var text = "scanning (" + loc.scan.payload.percentage + "%)"
@@ -202,7 +204,7 @@ function clearStatusClasses($element,className)
 $(document).ready(function(){
 
   $(document).on("click", "a.scan-button", function(ev) {
-    $a=$(this);
+    var $a=$(this);
     $.getJSON($a.data("href"),function(data)
     {
       clearStatusClasses($a.parent(),"starting")
