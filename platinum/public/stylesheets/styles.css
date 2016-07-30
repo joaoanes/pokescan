@@ -803,7 +803,7 @@ animation: AnimationName 15s ease infinite;
     text-align: center;
 }
 
-#locationModal
+.modal
 {
     z-index: 9500;
 }

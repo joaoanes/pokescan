@@ -46,7 +46,7 @@ head
     .container
       p Built with love from the works of many contributors. Todo: list them
       .version
-        small Pokescan 0.1 prealpha
+        small Pokescan 0.2 prealpha
 
 #locationModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
   .modal-dialog(role='document')
@@ -89,20 +89,23 @@ head
 
 
 
+#startupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+  .modal-dialog(role='document')
 
-#startupModal.modal.hide.fade
-  .modal-header
-    a.close(data-dismiss='modal') ×
-    h3 Changelog - new version!
-  .modal-body
-    h2 New in 0.2 pre-alpha
-    ul.list-group
-    each item in pageData.changelog
-      li.list-group-item #{item}
+    .modal-content
 
-  .modal-footer
-    a.btn(href='#') Close
-    a.btn.btn-primary(href='#') Save changes
+      .modal-header
+        a.close(data-dismiss='modal') ×
+        h3 Changelog - new version!
+      .modal-body
+        each change in pageData.changelogs
+          h2 New in #{change.version}
+          ul.list-group
+            each item in change.changelog
+              li.list-group-item #{item}
+
+      .modal-footer
+        button.btn.btn-secondary(type='button', data-dismiss='modal') Close
 
 
 
