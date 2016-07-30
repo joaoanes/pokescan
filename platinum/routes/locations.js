@@ -59,7 +59,7 @@ router.get('/:location/engage/', (req, res, next) => {
 	pokeMongo.getLocationFromShorthand(req.params.location).then( function(loc) {
 
 		scanQueue.start_scan(loc, true)
-		res.redirect("http://pokescan.online")
+		res.send("{message: 'What do you want, a redirect?'}")
 	}).catch(function(err){
 		console.log("error!")
 	})

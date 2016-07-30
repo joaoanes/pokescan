@@ -90,6 +90,19 @@ head
 
 
 
+#startupModal.modal.hide.fade
+  .modal-header
+    a.close(data-dismiss='modal') ×
+    h3 Changelog - new version!
+  .modal-body
+    h2 New in 0.2 pre-alpha
+    ul.list-group
+    each item in pageData.changelog
+      li.list-group-item #{item}
+
+  .modal-footer
+    a.btn(href='#') Close
+    a.btn.btn-primary(href='#') Save changes
 
 
 
