@@ -270,6 +270,7 @@ $(document).ready(function(){
     var $a=$(this);
     $.getJSON($a.data("href"),function(data)
     {
+      updateLocations()
       clearStatusClasses($a.parent(),"starting")
     });
   });
