@@ -195,7 +195,7 @@ function updateLocations()
 
     if (!selectedLocation)
       {
-        selectedLocation = (cookieLocation ? cookieLocation.location : null) || loc.location
+        selectedLocation = (cookieLocation ? cookieLocation.location : null) || res[0].location
         lastSelectionTime = Date.now()
         map.panTo(new google.maps.LatLng(selectedLocation.latLng[0], selectedLocation.latLng[1]))
 
