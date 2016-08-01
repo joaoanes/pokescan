@@ -19,7 +19,11 @@ var locationsHash = scanQueue.hash
 
 router.get('/all', (req, res, next) => {
 	pokeMongo.getAllLocations().then(function(pk){
-		pk = pk.map((location) => { return { location: location, scan: locationsHash[location.location] || {message: "there is nothing here, shoo"} } })
+		pk = pk.map((location) => {
+			if (locationsHash[location.location])
+				return { location: location, scan: { status: locationsHash[location.location].status, last_scan: locationsHash[location.location].last_scan, percentage: locationsHash[location.location].payload.percentage } }
+			return {location: location, scan: { status: "no data" } }
+		})
 		res.send(pk)
 	})
 });
@@ -62,6 +66,15 @@ router.get('/:location/engage/', (req, res, next) => {
 		res.send("{message: 'What do you want, a redirect?'}")
 	}).catch(function(err){
 		console.log("error!")
+	})
+
+})
+
+router.get('/:location/', (req, res, next) => {
+	pokeMongo.getLocationFromShorthand(req.params.location).then( function(loc) {
+		res.send({location: loc, scan: locationsHash[loc.location] || {status: "no data"} })
+	}).catch(function(err){
+		console.log("error: " + err)
 	})
 
 })

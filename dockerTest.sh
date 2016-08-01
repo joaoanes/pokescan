@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run -i --link pokeMongo:mongo pgoapi-runner -l 41.1579 -L -8.6291 -u pokeradarpt -p fsociety -a google
+docker run -e PGOAPI-RUNNER_DEBUG='1' -i --link pokeMongo:mongo pgoapi-runner -l 41.1579 -L -8.6291 -u satoshi9001 -p password -a ptc

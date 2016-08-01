@@ -29,24 +29,27 @@ head
         i(class="material-icons") menu
     #sidebar-wrapper
 
-
       ul.sidebar-nav.header
         #logo-area
           .bg
           span.logo-header Pokescan
           span.logo-header-small better than pokevision!
           #logo
-      ul.sidebar-nav.locations
+        #search
+          input(class="form-control", type="search", placeholder="Scroll to location shorthand", id="example-search-input")
 
-      ol.sidebar-nav.location-form
-        button.btn.btn-primary.btn-lg(type='button', data-toggle='modal', data-target='#locationModal')
-          | Add location
+      div.sidebar-fullheight
+        ul.sidebar-nav.locations
+        ol.sidebar-nav.location-form
+          button.btn.btn-primary.btn-lg(type='button', data-toggle='modal', data-target='#locationModal')
+            | Add location
 
   footer.footer
-    .container
-      p Built with love from the works of many contributors. Todo: list them
+    div
+      a(href='https://goo.gl/forms/MKHgF9jRsp3duvb42' class="alert alert-success") Ideas? Suggestions? Feedback? Insults? Click here for a wild ride.
       .version
-        small Pokescan 0.2 prealpha
+        small
+          button.btn(type='button', data-toggle='modal', data-target='#contributorsModal') Pokescan 0.3 prealpha
 
 #locationModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
   .modal-dialog(role='document')
@@ -98,15 +101,49 @@ head
         a.close(data-dismiss='modal') ×
         h3 Changelog - new version!
       .modal-body
-        each change in pageData.changelogs
-          h2 New in #{change.version}
-          ul.list-group
-            each item in change.changelog
-              li.list-group-item #{item}
+        h2 New in #{pageData.changelogs[0].version}
+        ul.list-group
+          each item in pageData.changelogs[0].changelog
+            li.list-group-item #{item}
 
       .modal-footer
         button.btn.btn-secondary(type='button', data-dismiss='modal') Close
 
+#contributorsModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='contributorsModal', aria-hidden='true')
+  .modal-dialog(role='document')
+
+    .modal-content
+
+      .modal-header
+        a.close(data-dismiss='modal') ×
+        h3 Contributors:
+      .modal-body
+        div.list-group
+          a.list-group-item.list-group-item-action.active(href='https://github.com/joaoanes')
+            h5.list-group-item-heading João Anes (joaoanes)
+            p.list-group-item-text
+              | PO and maintainer
+          a.list-group-item.list-group-item-action.active(href='https://github.com/tejado/')
+            h5.list-group-item-heading (tejado)
+            p.list-group-item-text
+              | PGOApi on which this project depends on
+          a.list-group-item.list-group-item-action.active(href='http://github.com/AHAAAAAAA')
+            h5.list-group-item-heading Ahmed Almutawa (AHAAAAAAA)
+            p.list-group-item-text
+              | Inspiration and I think I stole your pokemon images on the map
+          a.list-group-item.list-group-item-action.active(href='http://github.com/PokeAPI')
+            h5.list-group-item-heading The PokeAPI project (https://github.com/PokeAPI)
+            p.list-group-item-text
+              | That's where all the cute images come from!
+          a.list-group-item.list-group-item-action.active(href='http://github.com/Misirlou')
+            h5.list-group-item-heading Diogo Basto (Misirlou)
+            p.list-group-item-text
+              | Removed redirects on scan!
+
+
+
+      .modal-footer
+        button.btn.btn-secondary(type='button', data-dismiss='modal') Close
 
 
 // end template
@@ -119,5 +156,7 @@ script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/tethe
 script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.1/bootstrap-material-design.iife.min.js')
 
 script(src='http://maps.googleapis.com/maps/api/js?key=AIzaSyC0hXf145YSG2k7E0YbcSICcoXon7K2wik&extension=.js&output=embed')
+script(type='text/javascript', src='//rawgit.com/googlemaps/v3-utility-library/master/infobox/src/infobox.js')
+
 script(src='javascripts/pokemap.js')
 

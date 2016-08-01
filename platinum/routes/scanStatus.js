@@ -8,7 +8,7 @@ function ScanStatus(location, status, job, callback) {
 
 	var dockerInstance = spawn('stdbuf', [
 		'-i0', '-o0', '-e0',
-		'docker', 'run', '-i', '-a', 'stdout', '--rm', '--link', process.env.DOCKER_MONGO_NAME, 'pgoapi-runner',
+		'docker', 'run', '-i', '--rm', '--link', process.env.DOCKER_MONGO_NAME, 'pgoapi-runner',
 		'-u', process.env.LOGIN_USERNAME,
 		'-p', process.env.LOGIN_PASSWORD,
 		'-a', process.env.LOGIN_SERVICE,
@@ -32,7 +32,7 @@ function ScanStatus(location, status, job, callback) {
 	})
 
 	dockerInstance.on('exit', (code) => {
-		console.log(code + " is exiting")
+		console.log(job.jobId + " is exiting")
 		callback()
 	})
 

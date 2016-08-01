@@ -143,7 +143,7 @@ def main():
     if not api.login(config.auth_service, config.username, config.password):
         return
 
-    poi = find_poi_retry_aware(api, position[0], position[1], db)
+    poi = find_poi(api, position[0], position[1], db)
 
 def find_poi(api, lat, lng, db):
     poi = {'pokemons': {}, 'forts': []}
@@ -151,47 +151,6 @@ def find_poi(api, lat, lng, db):
     step_limit = 49
     coords = generate_spiral(lat, lng, step_size, step_limit)
     for coord in coords:
-
-        lat = coord['lat']
-        lng = coord['lng']
-        api.set_position(lat, lng, 0)
-        print( format(((coords.index(coord) + 1) / len(coords) * 100), ".2f") + " complete, at " + str(lat) + " " + str(lng) )
-
-        cell_ids = get_cell_ids(lat, lng)
-        timestamps = [0,] * len(cell_ids)
-        api.get_map_objects(latitude = util.f2i(lat), longitude = util.f2i(lng), since_timestamp_ms = timestamps, cell_id = cell_ids)
-        response_dict = api.call()
-        if 'status' in response_dict['responses']['GET_MAP_OBJECTS']:
-            if response_dict['responses']['GET_MAP_OBJECTS']['status'] == 1:
-                    for map_cell in response_dict['responses']['GET_MAP_OBJECTS']['map_cells']:
-                        if 'wild_pokemons' in map_cell:
-                            for pokemon in map_cell['wild_pokemons']:
-                                pokekey = get_key_from_pokemon(pokemon)
-                                pokemon['hides_at'] = time.time() + pokemon['time_till_hidden_ms']/1000
-                                pokemon['location'] =   {'type': 'Point', 'coordinates': [float(pokemon['latitude']), float(pokemon['longitude'])]}
-                                pokemon['pokekey'] = pokekey
-                                del pokemon["last_modified_timestamp_ms"]
-                                del pokemon["longitude"]
-                                del pokemon["latitude"]
-                                del pokemon["encounter_id"]
-                                del pokemon["time_till_hidden_ms"]
-
-                                if db.pokemon.find({"pokekey": pokekey}, {"_id": 1}).limit(1).count() == 0:
-                                    db.pokemon.insert(pokemon)
-                                    poi['pokemons'][pokekey] = pokemon
-
-
-    print(poi)
-    return poi
-
-
-def find_poi_retry_aware(api, lat, lng, db):
-    poi = {'pokemons': {}, 'forts': []}
-    step_size = 0.0015
-    step_limit = 49
-    coords = generate_spiral(lat, lng, step_size, step_limit)
-    for coord in coords:
-
         lat = coord['lat']
         lng = coord['lng']
         api.set_position(lat, lng, 0)
@@ -205,12 +164,14 @@ def find_poi_retry_aware(api, lat, lng, db):
             response_dict = api.call()
             if response_dict['status_code'] == 1:
                 break
-            #print("ahahah sucker")
 
         if 'status' in response_dict['responses']['GET_MAP_OBJECTS']:
             if response_dict['responses']['GET_MAP_OBJECTS']['status'] == 1:
                     for map_cell in response_dict['responses']['GET_MAP_OBJECTS']['map_cells']:
                         if 'wild_pokemons' in map_cell:
+                            if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+                                print('Pokemans:\n')
+                                print(len(map_cell['wild_pokemons']))
                             for pokemon in map_cell['wild_pokemons']:
                                 pokekey = get_key_from_pokemon(pokemon)
                                 pokemon['hides_at'] = time.time() + pokemon['time_till_hidden_ms']/1000
@@ -225,10 +186,20 @@ def find_poi_retry_aware(api, lat, lng, db):
                                 if db.pokemon.find({"pokekey": pokekey}, {"_id": 1}).limit(1).count() == 0:
                                     db.pokemon.insert(pokemon)
                                     poi['pokemons'][pokekey] = pokemon
+                        else:
+                            if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+                                print("no pokemon? nearby")
+                                print(map_cell)
+            else:
+                if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+                    tmpl = string.Template("Error, status code: $status")
+                    print(tmpl.substitute(status=response_dict['responses']['GET_MAP_OBJECTS']['status']))
 
+        time.sleep(6)
 
     print(poi)
     return poi
+
 
 def get_key_from_pokemon(pokemon):
     return '{}-{}-{}'.format(pokemon['spawn_point_id'], pokemon['pokemon_data']['pokemon_id'], hex(int(time.time() + pokemon['time_till_hidden_ms']/1000)))

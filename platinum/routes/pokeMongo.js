@@ -1,5 +1,6 @@
 var MongoClient = require('mongodb').MongoClient
-
+var pokemonList = require('../pokemon.json')
+var _ = require('underscore')
 
 function pokeMongo(url)
 {
@@ -58,15 +59,26 @@ pokeMongo.prototype.getAllLocations = function()
 pokeMongo.prototype.getAllPokemonNearby = function(latLng)
 {
 
-	return db.collection('pokemon').find( { location: { $nearSphere: latLng, $maxDistance: 0} },{ location: 1, pokemon_data: 1, _id: 0 }).toArray()
+	return db.collection('pokemon').find( { location: { $nearSphere: latLng, $maxDistance: 1/6378.1} },{ location: 1, pokemon_data: 1, spawn_point_id: 1, _id: 0, pokekey: 1 }).map( (db_pokemon) => {
+
+		db_pokemon.pokemon_name = _.find(pokemonList, (pokemon) => { return pokemon.id == db_pokemon.pokemon_data.pokemon_id } ).identifier
+		db_pokemon.pokemon_name = db_pokemon.pokemon_name.charAt(0).toUpperCase() + db_pokemon.pokemon_name.slice(1)
+		return db_pokemon
+
+	}).toArray()
 }
 
 pokeMongo.prototype.getLivePokemonNearby = function(latLng)
 {
 	var now = Date.now()/1000
 	return db.collection('pokemon').find( { location: { $nearSphere: latLng, $maxDistance: 1/6378.1}, hides_at: { $gte: now } },
-	 									  { location: 1, pokemon_data: 1, hides_at: 1, _id: 0 , pokekey: 1}
-	 									).toArray()
+	 									  { location: 1, pokemon_data: 1, hides_at: 1, spawn_point_id: 1, _id: 0 , pokekey: 1}
+	 									).map( (db_pokemon) => {
+
+		db_pokemon.pokemon_name = _.find(pokemonList, (pokemon) => { return pokemon.id == db_pokemon.pokemon_data.pokemon_id } ).identifier
+		db_pokemon.pokemon_name = db_pokemon.pokemon_name.charAt(0).toUpperCase() + db_pokemon.pokemon_name.slice(1)
+		return db_pokemon
+	}).toArray()
 
 }
 
