@@ -65,7 +65,7 @@ app.use(function(err, req, res, next) {
 console.log("Hello!")
 
 var rule = new schedule.RecurrenceRule();
-rule.second = 60;
+rule.second = 30;
 schedule.scheduleJob(rule, function(){
 
     pokeMongo.getAllScanningLocations().then(function(res){

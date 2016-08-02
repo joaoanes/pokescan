@@ -1,6 +1,8 @@
 var spawn = require('child_process').spawn
 var mergeStream= require('merge-stream')
 
+var accounts = [] //you can put usernames here
+
 function generate_spiral(starting_lat, starting_lng, step_size, step_limit)
 {
     var coords = [[starting_lat, starting_lng]]
