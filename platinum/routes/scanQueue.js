@@ -106,12 +106,10 @@ function process_finishing(status, progress) {
 function process_single_line(status, progress)
 {
 	status.status = ScanStatus.statuses.SCANNING
-	progress = sscanf(progress.toString(), '%f complete, at %f %f')
+	progress = sscanf(progress.toString(), '%f %f complete')
+	status.updateSwarm([progress[0], progress[1]])
 
-	status.payload.percentage = progress[0]
-	if (status.payload.percentage == 100.0)
-		status.status = "finishing"
-
+	status.payload.percentage = Number((status.doneCoordinates.length / (status.doneCoordinates.length + status.remainingCoordinates.length) * 100).toFixed(1))
 	if (!status.payload.warps)
 		status.payload.warps = []
 

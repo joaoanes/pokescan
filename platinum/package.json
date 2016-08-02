@@ -20,6 +20,7 @@
     "grunt-babel": "^6.0.0",
     "jade": "~1.11.0",
     "load-grunt-tasks": "^3.5.0",
+    "merge-stream": "^1.0.0",
     "mongodb": "^2.2.4",
     "morgan": "~1.7.0",
     "node-schedule": "^1.1.1",
