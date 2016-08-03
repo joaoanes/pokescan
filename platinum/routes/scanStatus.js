@@ -1,5 +1,4 @@
 var spawn = require('child_process').spawn
-var mergeStream= require('merge-stream')
 var AccountManager = require('./accountManager.js')
 var accountManagerSingleton = AccountManager.singleton()
 var sscanf = require('scanf').sscanf
