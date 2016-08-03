@@ -125,26 +125,30 @@ def main():
     position = (float(config.latitude), float(config.longitude), 0)
     if config.test:
         return
-    uri = "mongodb://" + str(os.environ['MONGO_PORT_27017_TCP_ADDR'])
-    if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+    if 'MONGO_PORT_27017_TCP_ADDR' in os.environ:
+        mongoaddress = os.environ['MONGO_PORT_27017_TCP_ADDR']
+    else:
+        mongoaddress = "localhost"
+    uri = "mongodb://" + str(mongoaddress)
+    if ('PGOAPIRUNNER_DEBUG' in os.environ):
         print("waiting to connect to database\n")
     mongoClient = MongoClient( uri )
-    if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+    if ('PGOAPIRUNNER_DEBUG' in os.environ):
         print("db ready")
     db = mongoClient.pokemon
-    if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+    if ('PGOAPIRUNNER_DEBUG' in os.environ):
         print("db ready for real")
     # instantiate pgoapi
     api = pgoapi.PGoApi()
 
     api.set_position(*position)
 
-    if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+    if ('PGOAPIRUNNER_DEBUG' in os.environ):
         print("logging in...")
     if not api.login(config.auth_service, config.username, config.password):
         return
 
-    if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+    if ('PGOAPIRUNNER_DEBUG' in os.environ):
         print("ok, starting scan...")
 
     poi = find_poi(api, position[0], position[1], db)
@@ -158,18 +162,17 @@ def find_poi(api, lat, lng, db):
     timestamps = [0,] * len(cell_ids)
 
     while True:
-            api.get_map_objects(latitude = util.f2i(lat), longitude = util.f2i(lng), since_timestamp_ms = timestamps, cell_id = cell_ids)
-            response_dict = api.call()
+            response_dict = api.get_map_objects(latitude = util.f2i(lat), longitude = util.f2i(lng), since_timestamp_ms = timestamps, cell_id = cell_ids)
             if response_dict['status_code'] == 1:
                 break
-            if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+            if ('PGOAPIRUNNER_DEBUG' in os.environ):
                 print(response_dict)
 
     if 'status' in response_dict['responses']['GET_MAP_OBJECTS']:
             if response_dict['responses']['GET_MAP_OBJECTS']['status'] == 1:
                     for map_cell in response_dict['responses']['GET_MAP_OBJECTS']['map_cells']:
                         if 'wild_pokemons' in map_cell:
-                            if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+                            if ('PGOAPIRUNNER_DEBUG' in os.environ):
                                 print('Pokemans:\n')
                                 print(len(map_cell['wild_pokemons']))
                             for pokemon in map_cell['wild_pokemons']:
@@ -187,16 +190,16 @@ def find_poi(api, lat, lng, db):
                                     db.pokemon.insert(pokemon)
                                     poi['pokemons'][pokekey] = pokemon
                         else:
-                            if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+                            if ('PGOAPIRUNNER_DEBUG' in os.environ):
                                 print("no pokemon? nearby")
                                 print(map_cell)
             else:
-                if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+                if ('PGOAPIRUNNER_DEBUG' in os.environ):
                     tmpl = string.Template("Error, status code: $status")
                     print(tmpl.substitute(status=response_dict['responses']['GET_MAP_OBJECTS']['status']))
 
     print( format(str(lat) + " " + str(lng) + " complete" ) )
-    if ('PGOAPI-RUNNER_DEBUG' in os.environ):
+    if ('PGOAPIRUNNER_DEBUG' in os.environ):
         print( poi )
 
     return poi

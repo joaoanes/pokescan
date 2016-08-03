@@ -1,59 +1,8 @@
 var spawn = require('child_process').spawn
 var mergeStream= require('merge-stream')
-
-var accounts = ["jfidgopr",
-"jfidgopr3",
-"pokexpto3000",
-"tetmsfog",
-"hellomaotg34",
-"franjascenas",
-"pqpestamerda1",
-"franjascenas1",
-"satsohirre3",
-"franjascenas2",
-"hallomothh4443",
-"pqpestamerda2",
-"pqpestamerda3",
-"FRANGOS1",
-"satsith43352346",
-"franjascenas4",
-"pqpestamerda4",
-"caligirl91284",
-"poste300000",
-"franjascenas5",
-"FRANGOS2",
-"pqpestamerda5",
-"jewstrump2909",
-"FRANGOS4",
-"weee900487",
-"pqpestamerda6",
-"franjascenas6",
-"orfuewt933",
-"FRANGOS5",
-"t438q9jnkgds",
-"pqpestamerda7",
-"franjascenas7",
-"4wqthoet8yg4wer",
-"pqpestamerda8",
-"FRANGOS6",
-"satoishg244",
-"pqpestamerda9",
-"pokesuper248i",
-"FRANGOS7",
-"franjascenas8",
-"franjascenas9",
-"vatilib",
-"pqpestamerda10",
-"FRANGOS8",
-"fduckst5934u",
-"pqpestamerda11",
-"xoburon",
-"FRANGOS9",
-"pqpestamerda12",
-"fazeclan3999",
-"FRANGOS10",
-"pqpestamerda13",
-"franjascenas11"]
+var AccountManager = require('./accountManager.js')
+var accountManagerSingleton = AccountManager.singleton()
+var sscanf = require('scanf').sscanf
 
 function generate_spiral(starting_lat, starting_lng, step_size, step_limit)
 {
@@ -97,74 +46,27 @@ function ScanStatus(location, status, job, callback) {
 	this.last_scan = null
 	this.callback = callback
 	this.job = job
-	this.remainingCoordinates = generate_spiral(location[0], location[1], 0.001, 47)
+	this.jobId = job.jobId
+	this.remainingCoordinates = generate_spiral(location[0], location[1], 0.001, 80)
 	this.doneCoordinates = []
 
 	var coordinates = this.remainingCoordinates
-	//HUGE RACING CONDITION
-	var superStream = mergeStream()
-	var superErrStream = mergeStream()
-
-	superStream.on('data', (data) => {
-		console.log(`stdout: ${data}`);
-		job.progress(data)
-	})
-
-
 
 	console.log("starting swarm id " + job.jobId + " for " + location)
+	var self = this
 
 	coordinates.forEach( (coords, i) => {
-		var account = accounts[Math.floor(Math.random()*accounts.length)]
-		console.log(`swarm member ${i} spawned with account ${account}`)
-		var dockerInstance = spawn('stdbuf', [
-			'-i0', '-o0', '-e0',
-			'docker', 'run', '-i', '--rm', '--link', process.env.DOCKER_MONGO_NAME, 'pgoapi-runner',
-			'-u', account,
-			'-p', "password",
-			'-a', "ptc",
-			'-l', coords[0],
-			'-L', coords[1],
-			'-d'
-			],
-			{ cwd: "../pgoapi/" })
 
-		setTimeout(()=>{
-			if (this.remainingCoordinates.indexOf(coords) != -1)
-			{
-				console.log(`Imma say this one crashed ${coords}`)
-				this.updateSwarm(coords)
-			}
-		}, 30000)
-
-		superStream.add(dockerInstance.stdout)
-		dockerInstance.stderr.on('data', (data) => {
-			console.log(`${coords} crashed, retrying`)
-		})
-
-		dockerInstance.on('exit', (code) => {
-			console.log(`swarm member ${i} is exiting, ${this.remainingCoordinates.length} remaining`)
-
-		})
-
+		startSwarmWorker(self, coords, i)
 
 	})
-
+	this.timeout = setTimeout(()=>{
+		console.log(`\n\nswarm with job id ${this.jobId} timed out, \n\n${this.remainingCoordinates} left`)
+		this.remainingCoordinates = []
+		callback()
+	}, 120000)
 	this.payload = { jobId: job.jobId }
 
-}
-
-ScanStatus.prototype.updateSwarm = function(coords)
-{
-	var index = this.remainingCoordinates.indexOf(coords)
-	this.doneCoordinates.push(coords)
-	this.remainingCoordinates.splice(index, 1)
-
-	if (this.remainingCoordinates.length == 0)
-	{
-		console.log(`swarm with job id ${this.jobId} has finished! ${this.remainingCoordinates.length} left`)
-		this.callback()
-	}
 }
 
 statuses = {
@@ -174,10 +76,103 @@ statuses = {
 	FINISHED: "finished"
 }
 
+
+function updateSwarm(self, coords)
+	{
+		var index = self.remainingCoordinates.indexOf(coords)
+		self.doneCoordinates.push(coords)
+		self.remainingCoordinates.splice(index, 1)
+
+		if (self.remainingCoordinates.length == 0)
+		{
+			console.log(`\n\nswarm with job id ${self.jobId} has finished!\n ${self.remainingCoordinates.length} left\n\n`)
+			clearTimeout(self.timeout)
+			self.callback()
+		}
+	}
+
+function spawnWorker(self, account, coords, swarmId, job)
+{
+		var instance = spawn('stdbuf', [
+					'-i0', '-o0', '-e0',
+					'docker', 'run', '-i', '--rm', '--link', process.env.DOCKER_MONGO_NAME, 'pgoapi-runner',
+					'-u', account,
+					'-p', "password",
+					'-a', "ptc",
+					'-l', coords[0],
+					'-L', coords[1],
+					'-d'
+					],
+					{ cwd: "../pgoapi/" })
+
+		var instanceStatus = "starting"
+
+		var timeout = setTimeout(()=>{
+			if (self.remainingCoordinates.indexOf(coords) != -1)
+			{
+				console.log(`Imma say this one crashed ${coords}, restarting`)
+				instanceStatus = "timeout"
+				instance.stdin.pause()
+				instance.stdout.pause()
+				instance.kill('SIGKILL')
+			}
+		}, 30000)
+
+		instance.stderr.on('data', (data) => {
+			console.log(`\n${coords} crashed\n\n${data}\n\n`)
+			instanceStatus = "error output"
+			if (data.toString().search("Could not retrieve token"))
+				instanceStatus = "error login"
+		})
+
+		instance.stdout.on('data', (data) => {
+			console.log(`stdout for ${swarmId}: ${data}`);
+			var progress = sscanf(data.toString(), '%f %f complete')
+			if (isNaN(progress[0]))
+			{
+				instanceStatus = "wrong output"
+				console.log(`error for swarm id ${swarmId}, not progressing\n\n`)
+				return
+			}
+
+			job.progress(data)
+			instanceStatus = "complete"
+
+
+		})
+
+		instance.on('exit', (code) => {
+			console.log(`swarm member ${swarmId} is exiting, status: ${instanceStatus} ${self.remainingCoordinates.length} remaining`)
+			if (instanceStatus != "complete")
+				AccountManager.releaseAccount(accountManagerSingleton, account, true)
+			else
+				AccountManager.releaseAccount(accountManagerSingleton, account)
+			clearTimeout(timeout)
+
+			if (instanceStatus != "complete")
+			{
+				console.log("not good enough, retrying..")
+				startSwarmWorker(self, coords, swarmId)
+			}
+		})
+
+		return instance
+	}
+	function startSwarmWorker(self, coords, swarmId)
+	{
+
+		AccountManager.getAccount(accountManagerSingleton).then((account) => {
+				console.log(`swarm member ${swarmId} spawned with account ${account}`)
+				var dockerInstance = spawnWorker(self, account, coords, swarmId, self.job)
+		})
+		console.log(`getting account for swarmId ${swarmId}`)
+	}
+
+
 ScanStatus.statuses = statuses
 
 ScanStatus.prototype.change_status = function(status) {
 	this.status = statuses[status]
 }
 
-module.exports = ScanStatus
+module.exports = {factory: ScanStatus, startSwarmWorker: startSwarmWorker, updateSwarm: updateSwarm}

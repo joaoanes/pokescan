@@ -9,6 +9,11 @@ var positionCircle = null
 var map
 var pokemonValues
 var positionMarker
+var scanCircles = []
+var scanIntervals = []
+
+
+        var itntn = 0
 
 function drawCurrentLocation()
 {
@@ -37,61 +42,82 @@ function centerOnPosition(position)
 function update()
 {
 
-  var scanCircle
-  var circleInterval
   drawCurrentLocation()
   $.get('/locations/' + selectedLocation.shorthand, (location) => {
+    if (typeof location == "string")
+      location = JSON.parse(location)
+    if (!location.scan)
+      return
 
-    if (location.scan.status == "scanning")
+    if (location.scan.status == "scanning" || location.scan.status == "scanned")
     {
-      if (scanCircle)
-        scanCircle.setMap( null )
+      if (scanCircles.length > 0)
+      {
+        scanIntervals.forEach( (interval) => {
+          clearInterval(interval)
+          itntn = itntn-1
+        })
+        scanCircles.forEach((circle) => {
+          circle.setMap(null)
+          circle = null
+        })
 
-      var warp = location.scan.payload.warps[location.scan.payload.warps.length - 1]
+        scanCircles = []
+        scanIntervals = []
+      }
 
-      scanCircle = new google.maps.Circle({
-          strokeColor: '#fefefe',
-          strokeOpacity: 0.2,
-          strokeWeight: 2,
-          fillColor: '#efefef',
-          fillOpacity: 1,
-          map: map,
-          center: new google.maps.LatLng(warp[0], warp[1]),
-          radius: 100
-      })
+      var warps = location.scan.payload.warps
+
+      warps.forEach( (warp) => {
 
 
-      circleInterval = setInterval( () => {
-        if (!scanCircle)
-          return
-
-        if (scanCircle.fillOpacity < 0)
-        {
-          clearInterval(circleInterval)
-          scanCircle.setMap(null)
-          scanCircle = null
-        }
-
-        else
-        {
-          var newOpacity = scanCircle.fillOpacity - 0.0175
-          var newStrokeOpacity = scanCircle.strokeOpacity - 0.0175
-
-          if (newOpacity < 0) newOpacity = 0
-          if (newStrokeOpacity < 0) newStrokeOpacity = 0
-
-          scanCircle.setOptions({
+        var scanCircle = new google.maps.Circle({
             strokeColor: '#afafaf',
-            strokeOpacity: newStrokeOpacity,
+            strokeOpacity: 0.2,
             strokeWeight: 2,
-            fillColor: '#efafaf',
-            fillOpacity: newOpacity,
+            fillColor: location.scan.status == "scanning" ? '#afefaf' : "#fafafa",
+            fillOpacity: 1,
             map: map,
             center: new google.maps.LatLng(warp[0], warp[1]),
-            radius: 100
-          })
-        }
-      }, 25)
+            radius: 70
+        })
+
+        scanCircles.push(scanCircle)
+
+        var circleInterval = setInterval( () => {
+          itntn = itntn+1
+
+          if ( scanCircle.fillOpacity <= 0 )
+          {
+            clearInterval(circleInterval)
+            scanCircle.setMap(null)
+            scanCircle = null
+            itntn = itntn-1
+          }
+
+          else
+          {
+            var newOpacity = scanCircle.fillOpacity - 0.1
+            var newStrokeOpacity = scanCircle.strokeOpacity - 0.01
+
+            if (newOpacity < 0) newOpacity = 0
+            if (newStrokeOpacity < 0) newStrokeOpacity = 0
+
+            scanCircle.setOptions({
+              strokeColor: '#afafaf',
+              strokeOpacity: newStrokeOpacity,
+              strokeWeight: 2,
+              fillColor: location.scan.status == "scanning" ? '#afefaf' : "#fafafa",
+              fillOpacity: newOpacity,
+              map: map,
+              center: new google.maps.LatLng(warp[0], warp[1]),
+              radius: 70
+            })
+          }
+        }, 100)
+
+        scanIntervals.push(circleInterval)
+      })
     }
   })
 

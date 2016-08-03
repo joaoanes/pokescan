@@ -1,6 +1,6 @@
 var Queue = require('bull')
 var locationQueue = Queue('location scanning', 6379, '127.0.0.1')
-var ScanStatus = require('./scanStatus.js')
+var ScanStatus = require('./scanStatus.js').factory
 var _ = require('underscore')
 var sscanf = require('scanf').sscanf
 var spawn = require('child_process').spawn
@@ -16,7 +16,6 @@ locationQueue.process(parseInt(process.env.CONCURRENCY), (job, done) => {
 	var location = job.data['location']
 
 	locationsHash[location.location] = new ScanStatus(location.latLng, "SCANNING", job, done)
-
 	locationsHash[location.location].status = "starting"
 	locationsHash[location.location].payload = { jobId: job.jobId }
 
@@ -32,8 +31,6 @@ locationQueue.on('progress', (job, progress) => {
 	}
 	if (status.status == "scanning" || status.status == "starting")
 		process_single_line(status, progress)
-	else
-		process_finishing(status, progress)
 })
 
 locationQueue.on('completed', (job) => {
@@ -50,9 +47,7 @@ locationQueue.on('completed', (job) => {
 	status.last_scan = Date.now()
 
 	if (jobsFinishCache[job.jobId])
-		status.payload = jobsFinishCache[job.jobId].join("")
-	else
-		status.payload = "Crashou?"
+		status.payload = scanStatus.doneCoordinates
 })
 
 locationQueue.on('error', function(error) {
@@ -79,7 +74,7 @@ var start_scan = function(location, force)
 	{
 		if (locationsHash[location.location])
 		{
-			if (locationsHash[location.location].status == ScanStatus.statuses.SCANNING || locationsHash[location.location].status == ScanStatus.statuses.STARTING)
+			if (locationsHash[location.location].status == ScanStatus.factory.statuses.SCANNING || locationsHash[location.location].status == ScanStatus.factory.statuses.STARTING)
 			{
 				console.log("not running scan for " + location.location + ", not ready")
 				return
@@ -95,25 +90,17 @@ var start_scan = function(location, force)
 
 var jobsFinishCache = {}
 
-function process_finishing(status, progress) {
-
-	if (!jobsFinishCache[status.payload.jobId])
-		jobsFinishCache[status.payload.jobId] = []
-
-	jobsFinishCache[status.payload.jobId].push(progress)
-}
-
 function process_single_line(status, progress)
 {
 	status.status = ScanStatus.statuses.SCANNING
 	progress = sscanf(progress.toString(), '%f %f complete')
-	status.updateSwarm([progress[0], progress[1]])
+	require('./scanStatus.js').updateSwarm(status,[progress[0], progress[1]])
 
 	status.payload.percentage = Number((status.doneCoordinates.length / (status.doneCoordinates.length + status.remainingCoordinates.length) * 100).toFixed(1))
 	if (!status.payload.warps)
 		status.payload.warps = []
 
-	status.payload.warps.push([progress[1], progress[2]])
+	status.payload.warps.push([progress[0], progress[1]])
 }
 
 
