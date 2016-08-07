@@ -2,12 +2,20 @@ var express = require('express');
 var router = express.Router();
 
 
-var changelogs = [{ version: "0.3.5", changelog:
+var changelogs = [{ version: "0.4", changelog:
+[
+"Made swarm scans actually work, with retries and all",
+"Thanks to the efforts of Unknown6Team, the api is returning pokemons again!",
+"I'm starting development on further features, check the feedback form!"
+
+]},
+{ version: "0.3.5", changelog:
 [
 "Fixed scans - and they're actually faster",
 "Added blips on the map to symbolize scan passes on selected location"
 
-]},{ version: "0.3", changelog:
+]},
+{ version: "0.3", changelog:
 [
 "Fixed scans - they're slower now, but they work. Thanks niantic.",
 "Added contributors, just click the footer!",
