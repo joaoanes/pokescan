@@ -467,6 +467,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function notify_pokemon(pokemon_name, pokemon_id, shorthand) {
+  if (!$('#notifications input').prop('checked'))
+    return
+
   if (Notification.permission !== "granted")
     Notification.requestPermission();
   else {

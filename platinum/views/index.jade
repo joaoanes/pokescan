@@ -20,7 +20,10 @@ head
       .loader-section.section-left
       .loader-section.section-right
 #main.container-fluid
-
+  #notifications
+    label.btn.btn-primary.active
+      input(type='checkbox', autocomplete='off')
+      |  Notifications
 
   #map-canvas
   .row#wrapper
@@ -37,6 +40,7 @@ head
           #logo
         #search
           input(class="form-control", type="search", placeholder="Scroll to location shorthand", id="example-search-input")
+
 
       div.sidebar-fullheight
         ul.sidebar-nav.locations

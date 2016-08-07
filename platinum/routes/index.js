@@ -6,6 +6,7 @@ var changelogs = [{ version: "0.4", changelog:
 [
 "Made swarm scans actually work, with retries and all",
 "Thanks to the efforts of Unknown6Team, the api is returning pokemons again!",
+"Added notifications checkbox",
 "I'm starting development on further features, check the feedback form!"
 
 ]},
