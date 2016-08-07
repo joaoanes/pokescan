@@ -179,4 +179,4 @@ ScanStatus.prototype.change_status = function(status) {
 	this.status = statuses[status]
 }
 
-module.exports = {factory: ScanStatus, startSwarmWorker: startSwarmWorker, updateSwarm: updateSwarm}
+module.exports = {factory: ScanStatus, statuses: statuses, startSwarmWorker: startSwarmWorker, updateSwarm: updateSwarm}

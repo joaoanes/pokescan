@@ -74,7 +74,7 @@ var start_scan = function(location, force)
 	{
 		if (locationsHash[location.location])
 		{
-			if (locationsHash[location.location].status == ScanStatus.factory.statuses.SCANNING || locationsHash[location.location].status == ScanStatus.factory.statuses.STARTING)
+			if (locationsHash[location.location].status == ScanStatus.statuses.SCANNING || locationsHash[location.location].status == ScanStatus.statuses.STARTING)
 			{
 				console.log("not running scan for " + location.location + ", not ready")
 				return

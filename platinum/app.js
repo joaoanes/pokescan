@@ -76,6 +76,9 @@ schedule.scheduleJob(rule, function(){
         console.log("starting scanner for " + loc.location)
         scanQueue.start_scan(loc)
       })
+    }).catch((e) => {
+      debugger
+
     })
 });
 
