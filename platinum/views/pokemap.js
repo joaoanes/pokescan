@@ -362,9 +362,9 @@ $(document).ready(function(){
     setInterval(update, 7000)
     setInterval(updateLocations, 500)
 
-    if (readCookie("chemtrainsarejustgodstears") == null)
+    if (readCookie("ladiesandgentlemenITSTHEERICANDRESHOW") == null)
     {
-      createCookie("chemtrainsarejustgodstears", "uh", 351)
+      createCookie("ladiesandgentlemenITSTHEERICANDRESHOW", "uh", 351)
       $('#startupModal').modal('show')
 
     }
