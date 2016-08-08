@@ -66,9 +66,7 @@ app.use(function(err, req, res, next) {
 
 console.log("Hello!")
 
-var rule = new schedule.RecurrenceRule();
-rule.second = 30;
-schedule.scheduleJob(rule, function(){
+schedule.scheduleJob("*/5 * * * *", function(){
 
     pokeMongo.getAllScanningLocations().then(function(res){
       res.forEach(function(loc)
@@ -77,8 +75,7 @@ schedule.scheduleJob(rule, function(){
         scanQueue.start_scan(loc)
       })
     }).catch((e) => {
-      debugger
-
+      console.log("error in getAllScanningLocations " + e)
     })
 });
 

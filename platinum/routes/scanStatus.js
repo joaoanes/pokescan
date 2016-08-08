@@ -139,7 +139,6 @@ function spawnWorker(self, account, coords, swarmId, job)
 				account = undefined
 				return
 			}
-
 			job.progress(data)
 			instanceStatus = "complete"
 

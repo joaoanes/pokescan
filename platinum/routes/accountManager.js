@@ -16,7 +16,7 @@ function getAccountInternal(self, ful)
 	if (accountKey)
 	{
 
-		if (self.activeAccounts <= 15)
+		if (self.activeAccounts <= 20)
 		{
 			self.accountMap[accountKey].used = true
 			self.activeAccounts = self.activeAccounts + 1
