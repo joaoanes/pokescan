@@ -13,6 +13,7 @@ pokeMongo = new pokeMongo()
 
 var routes = require('./routes/index');
 var locations = require('./routes/locations');
+var scans = require('./routes/scans');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/locations', locations);
+app.use('/scans', scans)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -63,9 +65,8 @@ app.use(function(err, req, res, next) {
 });
 
 console.log("Hello!")
-var rule = new schedule.RecurrenceRule();
-rule.second = 30;
-schedule.scheduleJob(rule, function(){
+
+schedule.scheduleJob("*/5 * * * *", function(){
 
     pokeMongo.getAllScanningLocations().then(function(res){
       res.forEach(function(loc)
@@ -73,6 +74,8 @@ schedule.scheduleJob(rule, function(){
         console.log("starting scanner for " + loc.location)
         scanQueue.start_scan(loc)
       })
+    }).catch((e) => {
+      console.log("error in getAllScanningLocations " + e)
     })
 });
 

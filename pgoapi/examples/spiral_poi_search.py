@@ -89,7 +89,7 @@ def init_config():
             load.update(json.load(data))
 
     # Read passed in Arguments
-    required = lambda x: not x in load
+    required = lambda x: x not in load
     parser.add_argument("-a", "--auth_service", help="Auth Service ('ptc' or 'google')",
         required=required("auth_service"))
     parser.add_argument("-u", "--username", help="Username", required=required("username"))
@@ -151,10 +151,7 @@ def main():
 
     # get player profile call
     # ----------------------
-    api.get_player()
-
-    # execute the RPC call
-    response_dict = api.call()
+    response_dict = api.get_player()
 
     # apparently new dict has binary data in it, so formatting it with this method no longer works, pprint works here but there are other alternatives    
     # print('Response dictionary: \n\r{}'.format(json.dumps(response_dict, indent=2)))
@@ -176,16 +173,16 @@ def find_poi(api, lat, lng):
         #timestamp gets computed a different way:
         cell_ids = get_cell_ids(lat, lng)
         timestamps = [0,] * len(cell_ids)
-        api.get_map_objects(latitude = util.f2i(lat), longitude = util.f2i(lng), since_timestamp_ms = timestamps, cell_id = cell_ids)
-        response_dict = api.call()
-        if 'status' in response_dict['responses']['GET_MAP_OBJECTS']:
-            if response_dict['responses']['GET_MAP_OBJECTS']['status'] == 1:
-                for map_cell in response_dict['responses']['GET_MAP_OBJECTS']['map_cells']:
-                    if 'wild_pokemons' in map_cell:
-                        for pokemon in map_cell['wild_pokemons']:
-                            pokekey = get_key_from_pokemon(pokemon)
-                            pokemon['hides_at'] = time.time() + pokemon['time_till_hidden_ms']/1000
-                            poi['pokemons'][pokekey] = pokemon
+        response_dict = api.get_map_objects(latitude = util.f2i(lat), longitude = util.f2i(lng), since_timestamp_ms = timestamps, cell_id = cell_ids)
+        if (response_dict['responses']):
+            if 'status' in response_dict['responses']['GET_MAP_OBJECTS']:
+                if response_dict['responses']['GET_MAP_OBJECTS']['status'] == 1:
+                    for map_cell in response_dict['responses']['GET_MAP_OBJECTS']['map_cells']:
+                        if 'wild_pokemons' in map_cell:
+                            for pokemon in map_cell['wild_pokemons']:
+                                pokekey = get_key_from_pokemon(pokemon)
+                                pokemon['hides_at'] = time.time() + pokemon['time_till_hidden_ms']/1000
+                                poi['pokemons'][pokekey] = pokemon
 
         # time.sleep(0.51)
     # new dict, binary data
@@ -195,7 +192,7 @@ def find_poi(api, lat, lng):
     print_gmaps_dbug(coords)
 
 def get_key_from_pokemon(pokemon):
-    return '{}-{}'.format(pokemon['spawnpoint_id'], pokemon['pokemon_data']['pokemon_id'])
+    return '{}-{}'.format(pokemon['spawn_point_id'], pokemon['pokemon_data']['pokemon_id'])
 
 def print_gmaps_dbug(coords):
     url_string = 'http://maps.googleapis.com/maps/api/staticmap?size=400x400&path='

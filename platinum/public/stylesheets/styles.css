@@ -800,3 +800,16 @@ animation: AnimationName 15s ease infinite;
     left: -13px;
     top: -2px
 }
+
+#notifications {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 150px;
+    height: 30px;
+    z-index: 9000;
+}
+
+#notifications .btn.btn-primary, #notifications .btn.btn-primary.active {
+    background-color: white;
+}

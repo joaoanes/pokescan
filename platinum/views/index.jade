@@ -2,7 +2,7 @@ doctype html
 head
   meta(http-equiv='content-type', content='text/html; charset=UTF-8')
   meta(charset='utf-8')
-  title Pokevision SUCKS ahaha
+  title Pokescan.online! The best scanner you ever knew
   meta(name='generator', content='Bootply')
   meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
   link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
@@ -20,7 +20,10 @@ head
       .loader-section.section-left
       .loader-section.section-right
 #main.container-fluid
-
+  #notifications
+    label.btn.btn-primary.active
+      input(type='checkbox', autocomplete='off')
+      |  Notifications
 
   #map-canvas
   .row#wrapper
@@ -33,10 +36,11 @@ head
         #logo-area
           .bg
           span.logo-header Pokescan
-          span.logo-header-small better than pokevision!
+          span.logo-header-small pokevision even died!
           #logo
         #search
           input(class="form-control", type="search", placeholder="Scroll to location shorthand", id="example-search-input")
+
 
       div.sidebar-fullheight
         ul.sidebar-nav.locations
@@ -46,10 +50,10 @@ head
 
   footer.footer
     div
-      a(href='https://goo.gl/forms/MKHgF9jRsp3duvb42' class="alert alert-success") Ideas? Suggestions? Feedback? Insults? Click here for a wild ride.
+      a(href='https://goo.gl/forms/MKHgF9jRsp3duvb42' class="alert alert-success") Scans are back online! Feedback welcome!
       .version
         small
-          button.btn(type='button', data-toggle='modal', data-target='#contributorsModal') Pokescan 0.3 prealpha
+          button.btn(type='button', data-toggle='modal', data-target='#contributorsModal') Pokescan 0.4 prealpha
 
 #locationModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
   .modal-dialog(role='document')

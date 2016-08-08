@@ -11,8 +11,10 @@ var geocoder = require('node-geocoder')({
 
 var pokeMongo = require('./pokeMongo.js')
 pokeMongo = new pokeMongo()
-var scanQueue = require('./scanQueue.js')
-var locationsHash = scanQueue.hash
+var locationsHash = []
+var scanQueue = new require('./scanQueue.js').factory("normal queue", locationsHash)
+var superScanQueue = new require('./scanQueue.js').factory("express queue", locationsHash)
+
 
 
 
@@ -62,7 +64,7 @@ router.get('/:location/pokemon/', (req, res, next) => {
 router.get('/:location/engage/', (req, res, next) => {
 	pokeMongo.getLocationFromShorthand(req.params.location).then( function(loc) {
 
-		scanQueue.start_scan(loc, true)
+		superScanQueue.start_scan(loc, true)
 		res.send("{message: 'What do you want, a redirect?'}")
 	}).catch(function(err){
 		console.log("error!")
@@ -72,9 +74,11 @@ router.get('/:location/engage/', (req, res, next) => {
 
 router.get('/:location/', (req, res, next) => {
 	pokeMongo.getLocationFromShorthand(req.params.location).then( function(loc) {
-		res.send({location: loc, scan: locationsHash[loc.location] || {status: "no data"} })
+		var json = JSON.stringify({location: loc, scan: locationsHash[loc.location] ? {status: locationsHash[loc.location].status, remaningCoordinates: locationsHash[loc.location].remainingCoordinates, payload: locationsHash[loc.location].payload} : {status: "no data"} })
+		res.send(json)
 	}).catch(function(err){
-		console.log("error: " + err)
+
+		console.log("muh error: " + err)
 	})
 
 })

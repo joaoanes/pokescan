@@ -27,10 +27,11 @@ Author: tjado <https://github.com/tejado>
 import os
 import sys
 import json
+import time
 import pprint
 import logging
-import argparse
 import getpass
+import argparse
 
 # add directory of this file to PATH, so that the package will be found
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
@@ -100,70 +101,33 @@ def main():
         logging.getLogger("pgoapi").setLevel(logging.DEBUG)
         logging.getLogger("rpc_api").setLevel(logging.DEBUG)
 
-    position = util.get_pos_by_name(config.location)
-    if not position:
-        log.error('Your given location could not be found by name')
-        return
-
-    if config.test:
-        return
 
     # instantiate pgoapi
     api = pgoapi.PGoApi()
 
-    # provide player position on the earth
-    api.set_position(*position)
-
-    if not api.login(config.auth_service, config.username, config.password):
+    # parse position
+    position = util.get_pos_by_name(config.location)
+    if not position:
+        log.error('Your given location could not be found by name')
+        return
+    elif config.test:
         return
 
-    # chain subrequests (methods) into one RPC call
+    # set player position on the earth
+    api.set_position(*position)
 
-    # get player profile call
-    # ----------------------
-    api.get_player()
+    # new authentication initialitation
+    api.set_authentication(provider = config.auth_service, username = config.username, password =  config.password)
 
-    # get inventory call
-    # ----------------------
-    api.get_inventory()
+    # provide the path for your encrypt dll
+    api.activate_signature("encrypt.dll")
 
-    # get map objects call
-    # repeated fields (e.g. cell_id and since_timestamp_ms in get_map_objects) can be provided over a list
-    # ----------------------
-    #cell_ids = util.get_cell_ids(position[0], position[1])
-    #timestamps = [0,] * len(cell_ids)
-    #api.get_map_objects(latitude = position[0], longitude = position[1], since_timestamp_ms = timestamps, cell_id = cell_ids)
+    # print get maps object
+    cell_ids = util.get_cell_ids(position[0], position[1])
+    timestamps = [0,] * len(cell_ids)
+    response_dict = api.get_map_objects(latitude =position[0], longitude = position[1], since_timestamp_ms = timestamps, cell_id = cell_ids)
+    print('Response dictionary (get_player): \n\r{}'.format(pprint.PrettyPrinter(indent=4).pformat(response_dict)))
 
-    # spin a fort
-    # ----------------------
-    #fortid = '<your fortid>'
-    #lng = <your longitude>
-    #lat = <your latitude>
-    #api.fort_search(fort_id=fortid, fort_latitude=lat, fort_longitude=lng, player_latitude=f2i(position[0]), player_longitude=f2i(position[1]))
-
-    # release/transfer a pokemon and get candy for it
-    # ----------------------
-    #api.release_pokemon(pokemon_id = <your pokemonid>)
-
-    # evolve a pokemon if you have enough candies
-    # ----------------------
-    #api.evolve_pokemon(pokemon_id = <your pokemonid>)
-
-    # get download settings call
-    # ----------------------
-    #api.download_settings(hash="05daf51635c82611d1aac95c0b051d3ec088a930")
-
-    # execute the RPC call
-    response_dict = api.call()
-
-    # print the response dict
-    print('Response dictionary: \n\r{}'.format(pprint.PrettyPrinter(indent=4).pformat(response_dict)))
-
-    # or dumps it as a JSON
-    #print('Response dictionary: \n\r{}'.format(json.dumps(response_dict, indent=2, cls=util.JSONByteEncoder)))
-
-    # alternative:
-    # api.get_player().get_inventory().get_map_objects().download_settings(hash="05daf51635c82611d1aac95c0b051d3ec088a930").call()
 
 if __name__ == '__main__':
     main()
