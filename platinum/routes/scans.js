@@ -5,7 +5,7 @@ var accountManagerSingleton = AccountManager.singleton()
 
 
 router.get('/accounts', function(req, res, next) {
-  res.send(accountManagerSingleton.accountMap);
+  res.send({acct: accountManagerSingleton.accountMap, accts_running: accountManagerSingleton.activeAccounts});
 });
 
 module.exports = router;

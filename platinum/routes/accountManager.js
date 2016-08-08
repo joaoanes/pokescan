@@ -2,6 +2,7 @@ var _ = require('underscore')
 
 
 function AccountManager() {
+	this.activeAccounts = 0
 	this.accountMap = {
 		"test, replace with your account name": { used: false, status: "healthy" }
 	}
@@ -14,10 +15,17 @@ function getAccountInternal(self, ful)
 	var accountKey = _.find(Object.keys(self.accountMap), (key)=> {return (!self.accountMap[key].used && (self.accountMap[key].status == "healthy" || self.accountMap[key].status == "flaky"))})
 	if (accountKey)
 	{
-		self.accountMap[accountKey].used = true
-		ful(accountKey)
 
-		return
+		if (self.activeAccounts <= 15)
+		{
+			self.accountMap[accountKey].used = true
+			self.activeAccounts = self.activeAccounts + 1
+			ful(accountKey)
+			finished = finished + 1
+
+			return
+		}
+
 	}
 
 	setTimeout( () => {
@@ -37,6 +45,7 @@ function releaseAccount(self, account, insucess)
 			accountObj.status = "flaky"
 
 		self.accountMap[account].used = false
+		self.activeAccounts = self.activeAccounts - 1
 	}
 
 	if (_.find(Object.keys(self.accountMap), (key) => {return self.accountMap[key].status == "healthy" || self.accountMap[key].status == "flaky"}) == null)
@@ -50,14 +59,15 @@ function releaseAccount(self, account, insucess)
 
 }
 
+var started = 0
+var finished = 0
+
 function getAccount(self)
 {
-
-
 	return new Promise((ful, rej) => {
-
+		started = started + 1
 		getAccountInternal(self, ful)
-	})
+	}).catch( (e) => {console.log("errorseP:" + e)})
 }
 
 var singletonInstance

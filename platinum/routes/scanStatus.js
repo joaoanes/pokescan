@@ -114,12 +114,16 @@ function spawnWorker(self, account, coords, swarmId, job)
 				instance.stdin.pause()
 				instance.stdout.pause()
 				instance.kill('SIGKILL')
+				AccountManager.releaseAccount(accountManagerSingleton, account, true)
+				account = undefined
 			}
 		}, 30000)
 
 		instance.stderr.on('data', (data) => {
 			console.log(`\n${coords} crashed\n\n${data}\n\n`)
 			instanceStatus = "error output"
+			AccountManager.releaseAccount(accountManagerSingleton, account, true)
+			account = undefined
 			if (data.toString().search("Could not retrieve token"))
 				instanceStatus = "error login"
 		})
@@ -131,26 +135,25 @@ function spawnWorker(self, account, coords, swarmId, job)
 			{
 				instanceStatus = "wrong output"
 				console.log(`error for swarm id ${swarmId}, not progressing\n\n`)
+				AccountManager.releaseAccount(accountManagerSingleton, account, true)
+				account = undefined
 				return
 			}
 
 			job.progress(data)
 			instanceStatus = "complete"
 
-
+			AccountManager.releaseAccount(accountManagerSingleton, account)
+			account = undefined
 		})
 
 		instance.on('exit', (code) => {
 			console.log(`swarm member ${swarmId} is exiting, status: ${instanceStatus} ${self.remainingCoordinates.length} remaining`)
-			if (instanceStatus != "complete")
-				AccountManager.releaseAccount(accountManagerSingleton, account, true)
-			else
-				AccountManager.releaseAccount(accountManagerSingleton, account)
 			clearTimeout(timeout)
 
 			if (instanceStatus != "complete")
 			{
-				console.log("not good enough, retrying..")
+				console.log("\nnot good enough, retrying..\n")
 				startSwarmWorker(self, coords, swarmId)
 			}
 		})
@@ -163,6 +166,8 @@ function spawnWorker(self, account, coords, swarmId, job)
 		AccountManager.getAccount(accountManagerSingleton).then((account) => {
 				console.log(`swarm member ${swarmId} spawned with account ${account}`)
 				var dockerInstance = spawnWorker(self, account, coords, swarmId, self.job)
+		}).catch( (e) => {
+			console.log("ERROR: " + e)
 		})
 		console.log(`getting account for swarmId ${swarmId}`)
 	}

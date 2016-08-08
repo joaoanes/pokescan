@@ -72,11 +72,10 @@ router.get('/:location/engage/', (req, res, next) => {
 
 router.get('/:location/', (req, res, next) => {
 	pokeMongo.getLocationFromShorthand(req.params.location).then( function(loc) {
-		debugger
 		var json = JSON.stringify({location: loc, scan: locationsHash[loc.location] ? {status: locationsHash[loc.location].status, remaningCoordinates: locationsHash[loc.location].remainingCoordinates, payload: locationsHash[loc.location].payload} : {status: "no data"} })
 		res.send(json)
 	}).catch(function(err){
-		debugger
+
 		console.log("muh error: " + err)
 	})
 

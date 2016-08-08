@@ -145,11 +145,13 @@ def main():
 
     if ('PGOAPIRUNNER_DEBUG' in os.environ):
         print("logging in...")
-    if not api.login(config.auth_service, config.username, config.password):
-        return
+
 
     if ('PGOAPIRUNNER_DEBUG' in os.environ):
         print("ok, starting scan...")
+
+    api.set_authentication(provider = config.auth_service, username = config.username, password =  config.password)
+    api.activate_signature("./libencrypt.so")
 
     poi = find_poi(api, position[0], position[1], db)
 
