@@ -2,7 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 
-var changelogs = [{ version: "0.3", changelog:
+var changelogs = [{ version: "0.3.5", changelog:
+[
+"Fixed scans - and they're actually faster",
+"Added blips on the map to symbolize scan passes on selected location"
+
+]},{ version: "0.3", changelog:
 [
 "Fixed scans - they're slower now, but they work. Thanks niantic.",
 "Added contributors, just click the footer!",

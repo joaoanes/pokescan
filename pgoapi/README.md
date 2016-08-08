@@ -13,8 +13,10 @@ It allows automatic parsing of requests/responses by finding the correct protobu
  * Google/PTC auth
  * Address parsing for GPS coordinates
  * Allows chaining of RPC calls
- * Good logging/debugging possibilities
- * Easy extension of further calls! No source code change required!
+ * Re-auth if ticket expired
+ * Check for server side-throttling
+ * Thread-safety
+ * Advanced logging/debugging
  * Uses [POGOProtos](https://github.com/AeonLucid/POGOProtos)
  * Mostly all available RPC calls (see [API reference](https://github.com/tejado/pgoapi/wiki/api_functions) on the wiki)
 
@@ -38,7 +40,11 @@ Join pgoapi.slack.com [here](https://pgoapislack.herokuapp.com/)!
 [elliottcarlson](https://github.com/elliottcarlson) for the Google Auth PR  
 [AeonLucid](https://github.com/AeonLucid/POGOProtos) for improved protos  
 [AHAAAAAAA](https://github.com/AHAAAAAAA/PokemonGo-Map) for parts of the s2sphere stuff  
-[mikeres0](https://github.com/mikeres0) for the slack channel including auto signup
+[mikeres0](https://github.com/mikeres0) for the slack channel including auto signup  
+[DeirhX](https://github.com/DeirhX) for thread-safety
 
 ## Ports
-[Node Port](https://github.com/Armax/Pokemon-GO-node-api) by Arm4x 
+[Node Port](https://github.com/Armax/Pokemon-GO-node-api) by Arm4x  
+[Node Port - pogobuf](https://github.com/cyraxx/pogobuf) by cyraxx 
+
+[![Analytics](https://ga-beacon.appspot.com/UA-1911411-4/pgoapi.git/README.md?pixel&useReferer)](https://github.com/igrigorik/ga-beacon)
