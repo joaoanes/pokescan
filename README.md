@@ -1,6 +1,8 @@
 # pokescan
 Pokescanner using the python api with a nodejs+mongo backing
 
+It's live too! http://pokescan.online
+
 # How to use
 1. Make sure docker is installed (and stdbuf too)
 2. Make sure there's a redis instance ready
