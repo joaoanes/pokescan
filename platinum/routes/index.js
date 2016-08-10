@@ -2,7 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 
-var changelogs = [{ version: "0.4", changelog:
+var changelogs = [{ version: "0.4b", changelog:
+[
+"Fixed most of the downtime issues, should work now!",
+"Moved out of docker containers and moved to a beefier server"
+]},
+{ version: "0.4", changelog:
 [
 "Made swarm scans actually work, with retries and all",
 "Thanks to the efforts of Unknown6Team, the api is returning pokemons again!",
